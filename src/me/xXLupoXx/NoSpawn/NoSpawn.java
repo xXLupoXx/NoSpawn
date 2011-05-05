@@ -66,6 +66,7 @@ public class NoSpawn extends JavaPlugin
       //System.out.println("You probably startet this plugin the first time. Please edit the configuration file in the your plugins folder!");
     }else
     {
+    	LoadNoSpawnConfig();
     }
 
 
