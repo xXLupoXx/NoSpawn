@@ -45,7 +45,7 @@ public class NoSpawn extends JavaPlugin
     		config.setProperty("worlds."+w.getName()+".spawn.Sheep", Boolean.valueOf(true));
     		config.setProperty("worlds."+w.getName()+".spawn.Cow", Boolean.valueOf(true));
     		config.setProperty("worlds."+w.getName()+".spawn.Chicken", Boolean.valueOf(true));
-    		config.setProperty("worlds."+w.getName()+".spawn.Pigman", Boolean.valueOf(true));
+    		config.setProperty("worlds."+w.getName()+".spawn.Zombie_Pigman", Boolean.valueOf(true));
     		config.setProperty("worlds."+w.getName()+".spawn.Squid", Boolean.valueOf(true));
     		config.setProperty("worlds."+w.getName()+".spawn.Wolf", Boolean.valueOf(true));
     		config.setProperty("worlds."+w.getName()+".spawn.Zombie", Boolean.valueOf(true));
@@ -61,34 +61,11 @@ public class NoSpawn extends JavaPlugin
     		config.setProperty("worlds."+w.getName()+".BlockBlacklist.Monster", "");
     	}
     	config.save();
+    	LoadNoSpawnConfig();
 
-      System.out.println("You probably startet this plugin the first time. Please edit the configuration file in the your plugins folder!");
+      //System.out.println("You probably startet this plugin the first time. Please edit the configuration file in the your plugins folder!");
     }else
     {
-    	for(World w : this.getServer().getWorlds())
-    	{
-    		if(config.getKeys("worlds") != null && config.getKeys("worlds").contains(w.getName()))
-    		{
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG, config.getBoolean("worlds."+ w.getName() +".spawn.Pig", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SHEEP, config.getBoolean("worlds."+ w.getName() +".spawn.Sheep", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.COW, config.getBoolean("worlds."+ w.getName() +".spawn.Cow", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CHICKEN, config.getBoolean("worlds."+ w.getName() +".spawn.Chicken", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Pigman", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SQUID, config.getBoolean("worlds."+ w.getName() +".spawn.Squid", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.WOLF, config.getBoolean("worlds."+ w.getName() +".spawn.Wolf", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Zombie", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SKELETON, config.getBoolean("worlds."+ w.getName() +".spawn.Skeleton", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spieder", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CREEPER, config.getBoolean("worlds."+ w.getName() +".spawn.Creeper", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SLIME, config.getBoolean("worlds."+ w.getName() +".spawn.Slime", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GHAST, config.getBoolean("worlds."+ w.getName() +".spawn.Ghast", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spider", true));
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, config.getBoolean("worlds."+ w.getName() +".spawn.Giant", true));
-    			
-    			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Animal", ""));
-    			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Monster", ""));
-    		}
-    	}
     }
 
 
@@ -180,5 +157,33 @@ public class NoSpawn extends JavaPlugin
     }
 
     return null;
+  }
+  
+  private void LoadNoSpawnConfig(){
+	  
+  	for(World w : this.getServer().getWorlds())
+	{
+		if(config.getKeys("worlds") != null && config.getKeys("worlds").contains(w.getName()))
+		{
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG, config.getBoolean("worlds."+ w.getName() +".spawn.Pig", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SHEEP, config.getBoolean("worlds."+ w.getName() +".spawn.Sheep", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.COW, config.getBoolean("worlds."+ w.getName() +".spawn.Cow", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CHICKEN, config.getBoolean("worlds."+ w.getName() +".spawn.Chicken", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Zombie_Pigman", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SQUID, config.getBoolean("worlds."+ w.getName() +".spawn.Squid", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.WOLF, config.getBoolean("worlds."+ w.getName() +".spawn.Wolf", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Zombie", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SKELETON, config.getBoolean("worlds."+ w.getName() +".spawn.Skeleton", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spider", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CREEPER, config.getBoolean("worlds."+ w.getName() +".spawn.Creeper", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SLIME, config.getBoolean("worlds."+ w.getName() +".spawn.Slime", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GHAST, config.getBoolean("worlds."+ w.getName() +".spawn.Ghast", true));
+			//this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spider", true));
+			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, config.getBoolean("worlds."+ w.getName() +".spawn.Giant", true));
+			
+			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Animal", ""));
+			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Monster", ""));
+		}
+	}
   }
 }

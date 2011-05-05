@@ -30,7 +30,7 @@ public class NoSpawnWorldListener extends WorldListener {
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SHEEP, config.getBoolean("worlds."+ w.getName() +".spawn.Sheep", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.COW, config.getBoolean("worlds."+ w.getName() +".spawn.Cow", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CHICKEN, config.getBoolean("worlds."+ w.getName() +".spawn.Chicken", true));
-				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Pigman", true));
+				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Zombie_Pigman", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SQUID, config.getBoolean("worlds."+ w.getName() +".spawn.Squid", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.WOLF, config.getBoolean("worlds."+ w.getName() +".spawn.Wolf", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.ZOMBIE, config.getBoolean("worlds."+ w.getName() +".spawn.Zombie", true));
@@ -52,7 +52,7 @@ public class NoSpawnWorldListener extends WorldListener {
 	    		config.setProperty("worlds."+w.getName()+".spawn.Sheep", Boolean.valueOf(true));
 	    		config.setProperty("worlds."+w.getName()+".spawn.Cow", Boolean.valueOf(true));
 	    		config.setProperty("worlds."+w.getName()+".spawn.Chicken", Boolean.valueOf(true));
-	    		config.setProperty("worlds."+w.getName()+".spawn.Pigman", Boolean.valueOf(true));
+	    		config.setProperty("worlds."+w.getName()+".spawn.Zombie_Pigman", Boolean.valueOf(true));
 	    		config.setProperty("worlds."+w.getName()+".spawn.Squid", Boolean.valueOf(true));
 	    		config.setProperty("worlds."+w.getName()+".spawn.Wolf", Boolean.valueOf(true));
 	    		config.setProperty("worlds."+w.getName()+".spawn.Zombie", Boolean.valueOf(true));

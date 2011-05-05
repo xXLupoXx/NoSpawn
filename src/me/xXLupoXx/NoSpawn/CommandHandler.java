@@ -119,14 +119,14 @@ public class CommandHandler {
 					  } else if(mob.equals("zombie_pigman")){
 						  
 						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Pigman", true);
+							  config.setProperty("worlds."+w+".spawn.Zombie_Pigman", true);
 							  player.sendMessage(ChatColor.GREEN + "Zombie Pigmen are now enabled!");
 						  }else {
-							  config.setProperty("worlds."+w+".spawn.Pigman", false);
+							  config.setProperty("worlds."+w+".spawn.Zombie_Pigman", false);
 							  player.sendMessage(ChatColor.GREEN + "Zombie Pigmen are now disabled!");
 						  }
 						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+w+".spawn.Pigman", true));
+						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+w+".spawn.Zombie_Pigman", true));
 						  return true;
 					  }  else if(mob.equals("squid")){
 						  
