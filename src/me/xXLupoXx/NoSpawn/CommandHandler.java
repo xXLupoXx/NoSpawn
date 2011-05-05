@@ -15,10 +15,10 @@ public class CommandHandler {
 	ConfigBuffer cb;
 	Configuration config;
 
-	public CommandHandler(Server server, ConfigBuffer cb, Configuration config) {
+	public CommandHandler(Server server, ConfigBuffer cb) {
 		this.server= server;
 		this.cb = cb;
-		this.config = config;
+		this.config = cb.plugin.getConfiguration();
 	}
 
 		public boolean setMob(CommandSender sender,String[] args){
@@ -246,8 +246,6 @@ public class CommandHandler {
 		
 		public boolean despawnMobs(CommandSender sender,String[] args){
 			Player player;
-			  String mob = args[2].toLowerCase();
-			  String w = args[1];
 			  List<Entity> le = new LinkedList<Entity>();
 			  
 			  
@@ -274,6 +272,9 @@ public class CommandHandler {
 				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn despawn <world> <monster>");
 				  return false;
 			  }
+			  
+			  String mob = args[2].toLowerCase();
+			  String w = args[1];
 			  
 			  if(this.server.getWorld(args[1]) == null){
 				  

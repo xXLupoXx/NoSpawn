@@ -9,4 +9,5 @@ public class ConfigBuffer
 {
 	public Map<org.bukkit.World , Spawns> worldSpawns = new HashMap<org.bukkit.World , Spawns>();
 	public PermissionHandler Permissions;
+	NoSpawn plugin;
 }

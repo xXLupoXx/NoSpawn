@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -84,18 +85,18 @@ public class NoSpawn extends JavaPlugin
     			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spider", true));
     			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, config.getBoolean("worlds."+ w.getName() +".spawn.Giant", true));
     			
-    			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("BlockBlacklist.Animal", ""));
-    			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("BlockBlacklist.Monster", ""));
+    			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Animal", ""));
+    			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Monster", ""));
     		}
     	}
     }
 
 
 
-    
+    cb.plugin = this;
     this.el = new NoSpawnEntityListener(this.cb,config);
-    wl = new NoSpawnWorldListener(cb, config);
-    this.cmh = new CommandHandler(this.getServer(), this.cb, this.config);
+    wl = new NoSpawnWorldListener(cb);
+    this.cmh = new CommandHandler(this.getServer(), this.cb);
     PluginDescriptionFile pdfFile = getDescription();
     
     if(setupPermissions()){
@@ -138,6 +139,10 @@ public class NoSpawn extends JavaPlugin
 			  return cmh.despawnMobs(sender, args);
 			  
 		  } else {
+			  if(sender instanceof Player){
+				  Player player = (Player)sender;
+				  player.sendMessage(args[0] + " isn't a parameter please use allowspawn or despawn!");
+			  }
 			  return false;
 		  }
 	  }

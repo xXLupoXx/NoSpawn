@@ -14,9 +14,9 @@ public class NoSpawnWorldListener extends WorldListener {
 	ConfigBuffer cb;
 	Configuration config;
 	
-	public NoSpawnWorldListener(ConfigBuffer cb, Configuration config){
+	public NoSpawnWorldListener(ConfigBuffer cb){
 		this.cb = cb;
-		this.config = config;
+		this.config = cb.plugin.getConfiguration();
 	}
 	
 	public void onWorldLoad(WorldLoadEvent event){
@@ -42,8 +42,8 @@ public class NoSpawnWorldListener extends WorldListener {
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+ w.getName() +".spawn.Spider", true));
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, config.getBoolean("worlds."+ w.getName() +".spawn.Giant", true));
 				
-				this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("BlockBlacklist.Animal", ""));
-				this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("BlockBlacklist.Monster", ""));
+				this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Animal", ""));
+				this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Monster", ""));
 				
 			}
 			else
@@ -83,8 +83,8 @@ public class NoSpawnWorldListener extends WorldListener {
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GHAST, true);
 				this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, true);
 
-				this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("BlockBlacklist.Animal", ""));
-				this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("BlockBlacklist.Monster", ""));
+				this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Animal", ""));
+				this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w.getName() +".BlockBlacklist.Monster", ""));
 			}
 
 	  }
