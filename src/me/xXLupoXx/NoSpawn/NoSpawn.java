@@ -4,18 +4,28 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+
+
 import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
+import com.nijikokun.bukkit.Permissions.Permissions;
+
 public class NoSpawn extends JavaPlugin
 {
   NoSpawnEntityListener el;
+  NoSpawnWorldListener wl;
   ConfigBuffer cb = new ConfigBuffer();
   private static String configfile = "plugins/NoSpawn/config.yml";
+  Configuration config;
+  CommandHandler cmh;
 
   public void onEnable()
   {
@@ -23,7 +33,7 @@ public class NoSpawn extends JavaPlugin
 	  {
 		  cb.worldSpawns.put(w, new Spawns());
 	  }
-    Configuration config = getConfiguration();
+    config = getConfiguration();
 
     File ft = new File(configfile);
     if (!ft.exists())
@@ -52,8 +62,7 @@ public class NoSpawn extends JavaPlugin
     	config.save();
 
       System.out.println("You probably startet this plugin the first time. Please edit the configuration file in the your plugins folder!");
-    }
-    else
+    }else
     {
     	for(World w : this.getServer().getWorlds())
     	{
@@ -78,56 +87,32 @@ public class NoSpawn extends JavaPlugin
     			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("BlockBlacklist.Animal", ""));
     			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("BlockBlacklist.Monster", ""));
     		}
-    		else
-    		{
-    			config.setProperty("worlds."+w.getName()+".spawn.Pig", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Sheep", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Cow", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Chicken", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Pigman", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Squid", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Wolf", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Zombie", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Skeleton", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Spider", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Creeper", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Slime", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Ghast", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Spider", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".spawn.Giant", Boolean.valueOf(true));
-        		config.setProperty("worlds."+w.getName()+".BlockBlacklist.Animal", "");
-        		config.setProperty("worlds."+w.getName()+".BlockBlacklist.Monster", "");
-        		config.save();
-        		
-        		System.out.println("[NoSpawn] New world \""+w.getName()+"\" detected");
-        		this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SHEEP, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.COW, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CHICKEN, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SQUID, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.WOLF, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.ZOMBIE, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SKELETON, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SPIDER, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.CREEPER, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.SLIME, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GHAST, true);
-    			this.cb.worldSpawns.get(w).SpawnAllowed.put(CreatureType.GIANT, true);
-
-    			this.cb.worldSpawns.get(w).AnimalBlockBlackList = getBlacklist(config.getString("BlockBlacklist.Animal", ""));
-    			this.cb.worldSpawns.get(w).MonterBlockBlacklist = getBlacklist(config.getString("BlockBlacklist.Monster", ""));
-    		}
     	}
-      
     }
 
-    this.el = new NoSpawnEntityListener(this.cb);
 
+
+    
+    this.el = new NoSpawnEntityListener(this.cb,config);
+    wl = new NoSpawnWorldListener(cb, config);
+    this.cmh = new CommandHandler(this.getServer(), this.cb, this.config);
     PluginDescriptionFile pdfFile = getDescription();
-
+    
+    if(setupPermissions()){
+    	
+    	System.out.println("[NoSpawn] Permissions found, using Permissions!");
+    	
+    }else{
+    	
+    	System.out.println("[NoSpawn] No Permissions found, Op's can use commands!");
+    	
+    }
+    
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+    
+    
     getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, this.el, Event.Priority.Normal, this);
+    getServer().getPluginManager().registerEvent(Event.Type.WORLD_LOAD, this.wl, Event.Priority.Normal, this);
   }
 
   public void onDisable()
@@ -136,6 +121,46 @@ public class NoSpawn extends JavaPlugin
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled... Oh my god they are coming!!!");
   }
 
+
+  
+  
+  @Override
+  public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+
+	  if(command.getName().equals("nospawn")){
+		  
+		  if(args[0].equals("allowspawn")){
+			  
+			  return cmh.setMob(sender, args);
+			  
+		  } else if (args[0].equals("despawn")){
+			  
+			  return cmh.despawnMobs(sender, args);
+			  
+		  } else {
+			  return false;
+		  }
+	  }
+	  
+	  return false;
+  }
+  
+  private boolean setupPermissions(){
+	    Plugin perm = this.getServer().getPluginManager().getPlugin("Permissions");
+
+		if (cb.Permissions == null) {
+		        if (perm != null) {
+		            cb.Permissions = ((Permissions)perm).getHandler();
+		            return true;
+		            
+		        } else {
+		            return false;
+		        }
+		    }
+		    return false;
+		}
+  
+  
   private List<Integer> getBlacklist(String args)
   {
     if (!args.isEmpty()) {
