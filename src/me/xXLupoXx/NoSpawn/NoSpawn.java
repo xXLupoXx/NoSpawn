@@ -92,10 +92,13 @@ public class NoSpawn extends JavaPlugin
     
     getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, this.el, Event.Priority.Normal, this);
     getServer().getPluginManager().registerEvent(Event.Type.WORLD_LOAD, this.wl, Event.Priority.Normal, this);
+    
+
   }
 
   public void onDisable()
   {
+	cb.worldSpawns = null;
     PluginDescriptionFile pdfFile = getDescription();
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled... Oh my god they are coming!!!");
   }

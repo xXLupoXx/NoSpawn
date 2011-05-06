@@ -1,7 +1,9 @@
 package me.xXLupoXx.NoSpawn;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -14,44 +16,50 @@ public class CommandHandler {
 	Server server;
 	ConfigBuffer cb;
 	Configuration config;
+	public Map<String,CreatureType> MobMap  = new HashMap<String,CreatureType>();
+	public Map<String,Entity> MobMapEntity  = new HashMap<String,Entity>();
 
 	public CommandHandler(Server server, ConfigBuffer cb) {
 		this.server= server;
 		this.cb = cb;
 		this.config = cb.plugin.getConfiguration();
+		//Configfile Map
+		
+		MobMap.put("Sheep", CreatureType.SHEEP);
+		MobMap.put("Pig", CreatureType.PIG);
+		MobMap.put("Cow", CreatureType.COW);
+		MobMap.put("Chicken", CreatureType.CHICKEN);
+		MobMap.put("Squid", CreatureType.SQUID);
+		MobMap.put("Zombie_Pigman", CreatureType.PIG_ZOMBIE);
+		MobMap.put("Wolf", CreatureType.WOLF);
+		MobMap.put("Zombie", CreatureType.ZOMBIE);
+		MobMap.put("Skeleton", CreatureType.SKELETON);
+		MobMap.put("Spider", CreatureType.SPIDER);
+		MobMap.put("Creeper", CreatureType.CREEPER);
+		MobMap.put("Slime", CreatureType.SLIME);
+		MobMap.put("Ghast", CreatureType.GHAST);
+		MobMap.put("Giant", CreatureType.GIANT);
+
+		
 	}
 
 		public boolean setMob(CommandSender sender,String[] args){
 			
-			  Player player;
-
-			  if(sender instanceof Player){
-				  player = (Player)sender;
-				  if(cb.Permissions == null){
-					  if(!player.isOp()){
-						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
-						  return false;
-					  }
-				  }else {
-					  
-					  if(!(cb.Permissions.has(player, "nospawn.allowspawn"))){
-						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
-						  return false;
-					  }
-				  }
-				  
-			  } else {
-				  player = null;
+			  Player player = checkPerm(sender,"allowspawn");
+			  	
+			  if(player == null){
 				  return false;
 			  }
-			  
-			  
+	  		  
 			  if(args.length<4){
 				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn allowspawn <world> <monster> <allow|deny>");
 				  return false;
 			  }
 			  
-			  String mob = args[2].toLowerCase();
+			  String mob = Character.toUpperCase(args[2].charAt(0)) + args[2].substring(1, args[2].length()).toLowerCase();
+			  if(args[2].toLowerCase().equals("zombie_pigman")){
+				  mob = "Zombie_Pigman";
+			  }
 			  String w = args[1];
 			  
 			  if(!(args[3].equals("deny") || args[3].equals("allow"))){
@@ -65,209 +73,50 @@ public class CommandHandler {
 				  player.sendMessage(ChatColor.RED + "This world does not exist!" );
 				  return false;
 			  }
+
 			  
-			  
-					  
-					  if(mob.equals("sheep")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Sheep", true);
-							  player.sendMessage(ChatColor.GREEN + "Sheeps are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Sheep", false);
-							  player.sendMessage(ChatColor.GREEN + "Sheeps are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.SHEEP, config.getBoolean("worlds."+w+".spawn.Sheep", true));
-						  return true;
-					  } else if(mob.equals("pig")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Pig", true);
-							  player.sendMessage(ChatColor.GREEN + "Pigs are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Pig", false);
-							  player.sendMessage(ChatColor.GREEN + "Pigs are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.PIG, config.getBoolean("worlds."+w+".spawn.Pig", true));
-						  return true;
-					  } else if(mob.equals("cow")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Cow", true);
-							  player.sendMessage(ChatColor.GREEN + "Cows are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Cow", false);
-							  player.sendMessage(ChatColor.GREEN + "Cows are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.COW, config.getBoolean("worlds."+w+".spawn.Cow", true));
-						  return true;
-					  } else if(mob.equals("chicken")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Chicken", true);
-							  player.sendMessage(ChatColor.GREEN + "Chickens are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Chicken", false);
-							  player.sendMessage(ChatColor.GREEN + "Chickens are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.CHICKEN, config.getBoolean("worlds."+w+".spawn.Chicken", true));
-						  return true;
-					  } else if(mob.equals("zombie_pigman")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Zombie_Pigman", true);
-							  player.sendMessage(ChatColor.GREEN + "Zombie Pigmen are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Zombie_Pigman", false);
-							  player.sendMessage(ChatColor.GREEN + "Zombie Pigmen are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.PIG_ZOMBIE, config.getBoolean("worlds."+w+".spawn.Zombie_Pigman", true));
-						  return true;
-					  }  else if(mob.equals("squid")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Squid", true);
-							  player.sendMessage(ChatColor.GREEN + "Squids are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Squid", false);
-							  player.sendMessage(ChatColor.GREEN + "Squids are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.SQUID, config.getBoolean("worlds."+w+".spawn.Squid", true));
-						  return true;
-					  } else if(mob.equals("wolf")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Wolf", true);
-							  player.sendMessage(ChatColor.GREEN + "Wolfs are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Wolf", false);
-							  player.sendMessage(ChatColor.GREEN + "Wolfs are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.WOLF, config.getBoolean("worlds."+w+".spawn.Wolf", true));
-						  return true;
-					  } else if(mob.equals("zombie")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Zombie", true);
-							  player.sendMessage(ChatColor.GREEN + "Zombies are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Zombie", false);
-							  player.sendMessage(ChatColor.GREEN + "Zombies are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.ZOMBIE, config.getBoolean("worlds."+w+".spawn.Zombie", true));
-						  return true;
-					  } else if(mob.equals("skeleton")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Skeleton", true);
-							  player.sendMessage(ChatColor.GREEN + "Skeletons are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Skeleton", false);
-							  player.sendMessage(ChatColor.GREEN + "Skeletons are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.SKELETON, config.getBoolean("worlds."+w+".spawn.Skeleton", true));
-						  return true;
-					  } else if(mob.equals("spider")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Spider", true);
-							  player.sendMessage(ChatColor.GREEN + "Spiders are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Spider", false);
-							  player.sendMessage(ChatColor.GREEN + "Spiders are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.SPIDER, config.getBoolean("worlds."+w+".spawn.Spider", true));
-						  return true;
-					  } else if(mob.equals("creeper")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Creeper", true);
-							  player.sendMessage(ChatColor.GREEN + "Creepers are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Creeper", false);
-							  player.sendMessage(ChatColor.GREEN + "Creepers are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.CREEPER, config.getBoolean("worlds."+w+".spawn.Creeper", true));
-						  return true;
-					  } else if(mob.equals("slime")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Slime", true);
-							  player.sendMessage(ChatColor.GREEN + "Slime is now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Slime", false);
-							  player.sendMessage(ChatColor.GREEN + "Slime is now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.SLIME, config.getBoolean("worlds."+w+".spawn.Slime", true));
-						  return true;
-					  } else if(mob.equals("ghast")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Ghast", true);
-							  player.sendMessage(ChatColor.GREEN + "Ghasts are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Ghast", false);
-							  player.sendMessage(ChatColor.GREEN + "Ghasts are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.GHAST, config.getBoolean("worlds."+w+".spawn.Ghast", true));
-						  return true;
-					  } else if(mob.equals("giant")){
-						  
-						  if(args[3].equals("allow")){
-							  config.setProperty("worlds."+w+".spawn.Giant", true);
-							  player.sendMessage(ChatColor.GREEN + "Giants are now enabled!");
-						  }else {
-							  config.setProperty("worlds."+w+".spawn.Giant", false);
-							  player.sendMessage(ChatColor.GREEN + "Giants are now disabled!");
-						  }
-						  config.save();
-						  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(CreatureType.GIANT, config.getBoolean("worlds."+w+".spawn.Giant", true));
-						  return true;
-					  } else {
-						  
-						  player.sendMessage(ChatColor.RED + "Creature"+args[2]+"does not exist!");
-						  return false;
-					  }
+			  if(MobMap.containsKey(mob)){
+				  
+				  if(args[3].equals("allow")){
+					  config.setProperty("worlds."+w+".spawn."+mob, true);
+					  player.sendMessage(ChatColor.GREEN + mob + "s are now enabled!");
+				  }else {
+					  config.setProperty("worlds."+w+".spawn."+mob, false);
+					  player.sendMessage(ChatColor.GREEN + mob + "s are now disabled!");
+				  }
+				  
+				  if(!(GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).AnimalBlockBlackList).isEmpty())){
+			    		config.setProperty("worlds."+w+".BlockBlacklist.Animal", GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).AnimalBlockBlackList));
+				  }
+				  if(!(GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).MonterBlockBlacklist).isEmpty())){
+			    		config.setProperty("worlds."+w+".BlockBlacklist.Monster", GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).MonterBlockBlacklist));
+				  }
+				  
+				  config.save();
+				  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(MobMap.get(mob), config.getBoolean("worlds."+w+".spawn."+mob, true));
+				  return true;
+				  
+			  } else {
+				  player.sendMessage(ChatColor.RED + "Creature "+args[2]+" does not exist!");
+				  return false;
+			  }
 
 		}
 		
+
+		
 		public boolean despawnMobs(CommandSender sender,String[] args){
-			Player player;
+			  Player player = checkPerm(sender,"despawn");
+			  	
+			  if(player == null){
+				  return false;
+			  }
+			  
+			  
 			  List<Entity> le = new LinkedList<Entity>();
 			  
 			  
-			  if(sender instanceof Player){
-				  player = (Player)sender;
-				  if(cb.Permissions == null){
-					  if(!player.isOp()){
-						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
-						  return false;
-					  }
-				  }else {
-					  
-					  if(!(cb.Permissions.has(player, "nospawn.despawn"))){
-						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
-						  return false;
-					  }
-				  }
-				  
-			  } else {
-				  player = null;
-				  return false;
-			  }
+
 			  if(args.length<3){
 				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn despawn <world> <monster>");
 				  return false;
@@ -443,10 +292,53 @@ public class CommandHandler {
 						  
 				  } else {
 					  
-					  player.sendMessage(ChatColor.RED + "Creature"+args[2]+"does not exist!");
+					  player.sendMessage(ChatColor.RED + "Creature "+args[2]+" does not exist!");
 					  return false;
 				  }
 
+		}
+		private Player checkPerm(CommandSender sender, String perm){
+			
+			Player player = null;
+			
+			  if(sender instanceof Player){
+				  player = (Player)sender;
+				  
+				  if(cb.Permissions == null){
+					  if(!player.isOp()){
+						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
+						  return null;
+					  }
+				  }else {
+					  
+					  if(!(cb.Permissions.has(player, "nospawn."+perm))){
+						  player.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
+						  return null;
+					  }
+				  }
+				  
+				  return player;
+				  
+			  } else {
+				 
+				  return null;
+			  }
+		}
+		
+		private String GetBlacklistString(List<Integer> bl){
+			
+			String buffer = "";
+			
+			for(int i = 0; i< bl.size(); i++){
+				if((bl.size()-1) == i){
+				buffer += String.format("%s", bl.get(i));
+				}else {
+				buffer += String.format("%s,", bl.get(i));
+				}
+			}
+			
+			return buffer;
+			
 		}
 
 }
