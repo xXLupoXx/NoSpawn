@@ -92,7 +92,7 @@ public class NoSpawnWorldListener extends WorldListener {
 	  private List<Integer> getBlacklist(String args)
 	  {
 	    if (!args.isEmpty()) {
-	      String[] arr = args.split(",");
+	      String[] arr = args.split(";");
 	      List<Integer> tmplist = new LinkedList<Integer>();
 
 	      for (int i = 0; i < arr.length; i++) {

@@ -119,7 +119,7 @@ public class NoSpawn extends JavaPlugin
 			  
 			  return cmh.despawnMobs(sender, args);
 			  
-		  } else {
+		  }  else {
 			  if(sender instanceof Player){
 				  Player player = (Player)sender;
 				  player.sendMessage(args[0] + " isn't a parameter please use allowspawn or despawn!");
@@ -150,7 +150,7 @@ public class NoSpawn extends JavaPlugin
   private List<Integer> getBlacklist(String args)
   {
     if (!args.isEmpty()) {
-      String[] arr = args.split(",");
+      String[] arr = args.split(";");
       List<Integer> tmplist = new LinkedList<Integer>();
 
       for (int i = 0; i < arr.length; i++) {

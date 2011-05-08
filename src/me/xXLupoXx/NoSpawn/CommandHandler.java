@@ -24,7 +24,6 @@ public class CommandHandler {
 		this.cb = cb;
 		this.config = cb.plugin.getConfiguration();
 		//Configfile Map
-		
 		MobMap.put("Sheep", CreatureType.SHEEP);
 		MobMap.put("Pig", CreatureType.PIG);
 		MobMap.put("Cow", CreatureType.COW);
@@ -39,8 +38,6 @@ public class CommandHandler {
 		MobMap.put("Slime", CreatureType.SLIME);
 		MobMap.put("Ghast", CreatureType.GHAST);
 		MobMap.put("Giant", CreatureType.GIANT);
-
-		
 	}
 
 		public boolean setMob(CommandSender sender,String[] args){
@@ -94,6 +91,10 @@ public class CommandHandler {
 				  
 				  config.save();
 				  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(MobMap.get(mob), config.getBoolean("worlds."+w+".spawn."+mob, true));
+				  this.cb.worldSpawns.get(this.server.getWorld(w)).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w +".BlockBlacklist.Animal", ""));
+				  this.cb.worldSpawns.get(this.server.getWorld(w)).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w +".BlockBlacklist.Monster", ""));
+				  
+				  
 				  return true;
 				  
 			  } else {
@@ -333,13 +334,29 @@ public class CommandHandler {
 				if((bl.size()-1) == i){
 				buffer += String.format("%s", bl.get(i));
 				}else {
-				buffer += String.format("%s,", bl.get(i));
+				buffer += String.format("%s;", bl.get(i));
 				}
 			}
 			
 			return buffer;
 			
 		}
+		
+		  private List<Integer> getBlacklist(String args)
+		  {
+		    if (!args.isEmpty()) {
+		      String[] arr = args.split(";");
+		      List<Integer> tmplist = new LinkedList<Integer>();
+
+		      for (int i = 0; i < arr.length; i++) {
+		        tmplist.add(Integer.valueOf(Integer.parseInt(arr[i].trim())));
+		      }
+
+		      return tmplist;
+		    }
+
+		    return null;
+		  }
 
 }
 
