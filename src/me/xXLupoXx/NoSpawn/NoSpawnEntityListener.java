@@ -10,10 +10,10 @@ public class NoSpawnEntityListener extends EntityListener
   ConfigBuffer cb;
   Configuration config;
   
-  public NoSpawnEntityListener(ConfigBuffer cb, Configuration config)
+  public NoSpawnEntityListener(ConfigBuffer cb)
   {
     this.cb = cb;
-    this.config = config;
+    this.config =cb.config;
   }
 
   public void onCreatureSpawn(CreatureSpawnEvent event)
@@ -23,7 +23,7 @@ public class NoSpawnEntityListener extends EntityListener
 			if(cb.worldSpawns.containsKey(event.getEntity().getWorld()))
 			{
 			
-			  if(cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getCreatureType(),event.getLocation().getBlock().getFace(BlockFace.DOWN)) == false)
+			  if(cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getCreatureType(),event.getLocation().getBlock().getFace(BlockFace.DOWN), event.getLocation()) == false)
 			  {
 				  //System.out.println(event.getCreatureType().getName() + "spawnt nicht!");
 				  event.setCancelled(true);

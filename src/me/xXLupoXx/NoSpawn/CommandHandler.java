@@ -1,11 +1,12 @@
 package me.xXLupoXx.NoSpawn;
 
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
@@ -16,31 +17,16 @@ public class CommandHandler {
 	Server server;
 	ConfigBuffer cb;
 	Configuration config;
-	public Map<String,CreatureType> MobMap  = new HashMap<String,CreatureType>();
-	public Map<String,Entity> MobMapEntity  = new HashMap<String,Entity>();
+	public Map<String,CreatureType> MobMap;
 
 	public CommandHandler(Server server, ConfigBuffer cb) {
 		this.server= server;
 		this.cb = cb;
 		this.config = cb.plugin.getConfiguration();
-		//Configfile Map
-		MobMap.put("Sheep", CreatureType.SHEEP);
-		MobMap.put("Pig", CreatureType.PIG);
-		MobMap.put("Cow", CreatureType.COW);
-		MobMap.put("Chicken", CreatureType.CHICKEN);
-		MobMap.put("Squid", CreatureType.SQUID);
-		MobMap.put("Zombie_Pigman", CreatureType.PIG_ZOMBIE);
-		MobMap.put("Wolf", CreatureType.WOLF);
-		MobMap.put("Zombie", CreatureType.ZOMBIE);
-		MobMap.put("Skeleton", CreatureType.SKELETON);
-		MobMap.put("Spider", CreatureType.SPIDER);
-		MobMap.put("Creeper", CreatureType.CREEPER);
-		MobMap.put("Slime", CreatureType.SLIME);
-		MobMap.put("Ghast", CreatureType.GHAST);
-		MobMap.put("Giant", CreatureType.GIANT);
+		this.MobMap = cb.MobMap;
 	}
 
-		public boolean setMob(CommandSender sender,String[] args){
+		public boolean allowSpawn(CommandSender sender,String[] args){
 			
 			  Player player = checkPerm(sender,"allowspawn");
 			  	
@@ -48,59 +34,28 @@ public class CommandHandler {
 				  return false;
 			  }
 	  		  
-			  if(args.length<4){
-				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn allowspawn <world> <monster> <allow|deny>");
+			  if(args.length<3){
+				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn allowspawn <world> <monster>");
 				  return false;
 			  }
 			  
-			  String mob = Character.toUpperCase(args[2].charAt(0)) + args[2].substring(1, args[2].length()).toLowerCase();
-			  if(args[2].toLowerCase().equals("zombie_pigman")){
-				  mob = "Zombie_Pigman";
-			  }
-			  String w = args[1];
-			  
-			  if(!(args[3].equals("deny") || args[3].equals("allow"))){
-				 
-				  player.sendMessage(ChatColor.RED + "Invalid argument please use deny or allow");
-				  return false;
-			  }
-			  
-			  if(this.server.getWorld(args[1]) == null){
-				  
-				  player.sendMessage(ChatColor.RED + "This world does not exist!" );
-				  return false;
-			  }
+			  return setConf(player,args,"allow");
 
-			  
-			  if(MobMap.containsKey(mob)){
-				  
-				  if(args[3].equals("allow")){
-					  config.setProperty("worlds."+w+".spawn."+mob, true);
-					  player.sendMessage(ChatColor.GREEN + mob + "s are now enabled!");
-				  }else {
-					  config.setProperty("worlds."+w+".spawn."+mob, false);
-					  player.sendMessage(ChatColor.GREEN + mob + "s are now disabled!");
-				  }
-				  
-				  if(!(GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).AnimalBlockBlackList).isEmpty())){
-			    		config.setProperty("worlds."+w+".BlockBlacklist.Animal", GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).AnimalBlockBlackList));
-				  }
-				  if(!(GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).MonterBlockBlacklist).isEmpty())){
-			    		config.setProperty("worlds."+w+".BlockBlacklist.Monster", GetBlacklistString(cb.worldSpawns.get(server.getWorld(w)).MonterBlockBlacklist));
-				  }
-				  
-				  config.save();
-				  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(MobMap.get(mob), config.getBoolean("worlds."+w+".spawn."+mob, true));
-				  this.cb.worldSpawns.get(this.server.getWorld(w)).AnimalBlockBlackList = getBlacklist(config.getString("worlds."+ w +".BlockBlacklist.Animal", ""));
-				  this.cb.worldSpawns.get(this.server.getWorld(w)).MonterBlockBlacklist = getBlacklist(config.getString("worlds."+ w +".BlockBlacklist.Monster", ""));
-				  
-				  
-				  return true;
-				  
-			  } else {
-				  player.sendMessage(ChatColor.RED + "Creature "+args[2]+" does not exist!");
+		}
+		public boolean denySpawn(CommandSender sender,String[] args){
+			
+			  Player player = checkPerm(sender,"denyspawn");
+			  	
+			  if(player == null){
 				  return false;
 			  }
+	  		  
+			  if(args.length<3){
+				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn allowspawn <world> <monster>");
+				  return false;
+			  }
+			  
+			  return setConf(player,args,"deny");
 
 		}
 		
@@ -298,6 +253,107 @@ public class CommandHandler {
 				  }
 
 		}
+		
+		public boolean SpawnMob(CommandSender sender,String[] args){
+			
+			  Player player = checkPerm(sender,"spawn");
+			  Location tmpLoc;
+			  int amount = 0 ;	
+			  if(player == null){
+				  return false;
+			  }
+			  
+			  if(args.length <2 || args.length > 3){
+				  
+				  player.sendMessage(ChatColor.RED +"Invalid number of arguments! Usage is /nospawn spawn <mob> [amount]");
+				  
+				  return false;
+				  
+			  }
+			  
+			  if(args.length <3){
+				  amount = 1;
+			  }
+			  else{
+				  if(isInt(args[2])){
+					  amount = Integer.parseInt(args[2]);
+				  }else {
+					  player.sendMessage(ChatColor.RED + "This is not a number!");
+					  return false;
+				  }
+			  }
+			  
+			  String mob = Character.toUpperCase(args[1].charAt(0)) + args[1].substring(1, args[1].length()).toLowerCase();
+			  if(args[1].toLowerCase().equals("zombie_pigman")){
+				  mob = "Zombie_Pigman";
+			  }
+			  
+
+			  
+			  if(!(MobMap.containsKey(mob))){
+				  
+				  player.sendMessage(ChatColor.RED + "Creature "+args[1]+" does not exist!");
+				  return false;
+				  
+			  }
+			  
+			  
+			  tmpLoc = player.getLocation();
+			  tmpLoc.setPitch(0);
+			  tmpLoc.setYaw(0);
+			  
+			  cb.AdminSpawns.put(tmpLoc, MobMap.get(mob));
+			  		  
+			  for(int i = 0; i < amount; i++){
+				  
+				  player.getWorld().spawnCreature(player.getLocation(), MobMap.get(mob));
+				  
+			  }
+			  cb.AdminSpawns.clear();
+			  
+			  player.sendMessage(ChatColor.GREEN + "Spawned "+ amount +" "+ mob +"s");
+			
+			return true;
+			
+		}
+		
+		private boolean setConf(Player player, String[] args, String operation){
+			  String mob = Character.toUpperCase(args[2].charAt(0)) + args[2].substring(1, args[2].length()).toLowerCase();
+			  if(args[2].toLowerCase().equals("zombie_pigman")){
+				  mob = "Zombie_Pigman";
+			  }
+			  String w = args[1];
+			  
+			  if(this.server.getWorld(args[1]) == null){
+				  
+				  player.sendMessage(ChatColor.RED + "This world does not exist!" );
+				  return false;
+			  }
+
+			  
+			  if(MobMap.containsKey(mob)){
+				  
+				  if(operation.equals("allow")){
+					  config.setProperty("worlds."+w+".creature."+mob+".spawn", true);
+					  player.sendMessage(ChatColor.GREEN + mob + "s are now enabled!");
+				  } else {
+					  config.setProperty("worlds."+w+".creature."+mob+".spawn", false);
+					  player.sendMessage(ChatColor.GREEN + mob + "s are now disabled!");
+				  }
+				  
+				  config.save();
+				  this.cb.worldSpawns.get(this.server.getWorld(w)).SpawnAllowed.put(MobMap.get(mob), config.getBoolean("worlds."+w+".creature."+mob+".spawn", true));
+
+				  
+				  
+				  return true;
+				  
+			  } else {
+				  player.sendMessage(ChatColor.RED + "Creature "+args[2]+" does not exist!");
+				  return false;
+			  }
+		}
+		
 		private Player checkPerm(CommandSender sender, String perm){
 			
 			Player player = null;
@@ -325,37 +381,17 @@ public class CommandHandler {
 				  return null;
 			  }
 		}
-		
-		private String GetBlacklistString(List<Integer> bl){
-			
-			String buffer = "";
-			
-			for(int i = 0; i< bl.size(); i++){
-				if((bl.size()-1) == i){
-				buffer += String.format("%s", bl.get(i));
-				}else {
-				buffer += String.format("%s;", bl.get(i));
-				}
-			}
-			
-			return buffer;
-			
-		}
-		
-		  private List<Integer> getBlacklist(String args)
-		  {
-		    if (!args.isEmpty()) {
-		      String[] arr = args.split(";");
-		      List<Integer> tmplist = new LinkedList<Integer>();
 
-		      for (int i = 0; i < arr.length; i++) {
-		        tmplist.add(Integer.valueOf(Integer.parseInt(arr[i].trim())));
-		      }
-
-		      return tmplist;
-		    }
-
-		    return null;
+		  private boolean isInt(String args){
+			  
+			  try{
+				  Integer.parseInt(args);
+				  return true;
+			  }
+			  catch (Exception e)
+			  {
+				  return false;
+			  }
 		  }
 
 }
