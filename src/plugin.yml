@@ -1,7 +1,7 @@
 name: NoSpawn
 main: me.xXLupoXx.NoSpawn.NoSpawn
 author: xXLupoXx
-version: 1.4
+version: 1.4.1
 commands:
   nospawn:
     description: NoSpawn commands

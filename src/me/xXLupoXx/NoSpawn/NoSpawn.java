@@ -1,6 +1,8 @@
 package me.xXLupoXx.NoSpawn;
 
 import java.io.File;
+
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -84,28 +86,36 @@ public class NoSpawn extends JavaPlugin
 
 	  if(command.getName().equals("nospawn")){
 		  
-		  if(args[0].equals("allowspawn")){
-			  
-			  return cmh.allowSpawn(sender, args);
-			  
-		  } else if (args[0].equals("denyspawn")){
-			  
-			  return cmh.denySpawn(sender, args);
-			  
-		  } else if (args[0].equals("despawn")){
-			  
-			  return cmh.despawnMobs(sender, args);
-			  
-		  } else if (args[0].equals("spawn")){
-			  
-			  return cmh.SpawnMob(sender, args);
-			  
+		  if(args.length > 0){
+			  if(args[0].equals("allowspawn")){
+				  
+				  return cmh.allowSpawn(sender, args);
+				  
+			  } else if (args[0].equals("denyspawn")){
+				  
+				  return cmh.denySpawn(sender, args);
+				  
+			  } else if (args[0].equals("despawn")){
+				  
+				  return cmh.despawnMobs(sender, args);
+				  
+			  } else if (args[0].equals("spawn")){
+				  
+				  return cmh.SpawnMob(sender, args);
+				  
+			  } else {
+				  if(sender instanceof Player){
+					  Player player = (Player)sender;
+					  player.sendMessage(ChatColor.RED + args[0] + " isn't a parameter please use allowspawn or despawn!");
+				  }
+				  return false;
+			  }
 		  } else {
+			  
 			  if(sender instanceof Player){
 				  Player player = (Player)sender;
-				  player.sendMessage(args[0] + " isn't a parameter please use allowspawn or despawn!");
+				  player.sendMessage(ChatColor.RED + "No arguments given. Please use allowspawn, denyspawn, despawn or spawn");
 			  }
-			  return false;
 		  }
 	  }
 	  
