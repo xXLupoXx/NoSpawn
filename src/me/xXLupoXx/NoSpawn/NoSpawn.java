@@ -20,6 +20,7 @@ public class NoSpawn extends JavaPlugin
   NoSpawnEntityListener el;
   NoSpawnWorldListener wl;
   ConfigBuffer cb;
+  MobCounter mc;
   private static String configfile = "plugins/NoSpawn/config.yml";
 
   CommandHandler cmh;
@@ -48,6 +49,7 @@ public class NoSpawn extends JavaPlugin
 
     cb.plugin = this;
     this.el = new NoSpawnEntityListener(this.cb);
+    mc = new MobCounter(this.getServer(),cb);
     wl = new NoSpawnWorldListener(cb);
     this.cmh = new CommandHandler(this.getServer(), this.cb);
     PluginDescriptionFile pdfFile = getDescription();
@@ -71,9 +73,11 @@ public class NoSpawn extends JavaPlugin
 
   }
 
-  public void onDisable()
+  @SuppressWarnings("deprecation")
+public void onDisable()
   {
 	cb.worldSpawns = null;
+	mc.stop();
     PluginDescriptionFile pdfFile = getDescription();
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled... Oh my god they are coming!!!");
   }
@@ -103,19 +107,28 @@ public class NoSpawn extends JavaPlugin
 				  
 				  return cmh.SpawnMob(sender, args);
 				  
+			  } else if (args[0].equals("setmoblimit")){
+				  
+				  return cmh.setMobLimit(sender, args);
+				  
+			  } else if (args[0].equals("settotalmoblimit")){
+				  
+				  return cmh.setTotalMobLimit(sender, args);
+				  
+			  } else if (args[0].equals("settimer")){
+				  
+				  return cmh.setMobTimer(sender, args);
+				  
 			  } else {
-				  if(sender instanceof Player){
-					  Player player = (Player)sender;
-					  player.sendMessage(ChatColor.RED + args[0] + " isn't a parameter please use allowspawn or despawn!");
-				  }
+				  
+				  sendNospawnMessage(sender,args[0] + " isn't a valid parameter! Please use allowspawn, denyspawn, despawn, spawn, setmoblimit, settotalmoblimit or settimer ",ChatColor.RED);
 				  return false;
+				  
 			  }
 		  } else {
 			  
-			  if(sender instanceof Player){
-				  Player player = (Player)sender;
-				  player.sendMessage(ChatColor.RED + "No arguments given. Please use allowspawn, denyspawn, despawn or spawn");
-			  }
+				  sendNospawnMessage(sender, "No arguments given. Please use allowspawn, denyspawn, despawn or spawn",ChatColor.RED);
+				  
 		  }
 	  }
 	  
@@ -136,5 +149,20 @@ public class NoSpawn extends JavaPlugin
 		    }
 		    return false;
 		}
+  
+  public void sendNospawnMessage(CommandSender sender, String Message, ChatColor Color){
+	  
+	  if(sender instanceof Player){
+		  
+		  Player player = (Player)sender;
+		  player.sendMessage(Color + Message);
+		  
+	  } else {
+		  
+		  System.out.println("[NoSpawn] " + Message);
+		  
+	  }
+	  
+  }
 
 }

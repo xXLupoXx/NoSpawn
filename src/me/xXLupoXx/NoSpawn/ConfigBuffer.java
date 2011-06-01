@@ -21,6 +21,7 @@ public class ConfigBuffer
 	public Map<String,CreatureType> MobMap  = new HashMap<String,CreatureType>();
 	public PermissionHandler Permissions;
 	public NoSpawn plugin;
+	public int CountTimer;
 	public Configuration config;
 	
 	public ConfigBuffer(NoSpawn plugin){
@@ -55,6 +56,9 @@ public class ConfigBuffer
 				Buffer = Mobs.next();
 				config.setProperty("worlds."+w.getName()+".creature."+Buffer+".spawn", Boolean.valueOf(true));
 				config.setProperty("worlds."+w.getName()+".creature."+Buffer+".BlockBlacklist", "");
+				config.setProperty("worlds."+w.getName()+".creature."+Buffer+".Limit", 0);
+				config.setProperty("worlds."+w.getName()+".properties.TotalMobLimit",0);
+				config.setProperty("properties.RefrechTimer",20000);
 				
 			}
     	}
@@ -69,6 +73,9 @@ public class ConfigBuffer
 			Buffer = Mobs.next();
 			config.setProperty("worlds."+w.getName()+".creature."+Buffer+".spawn", Boolean.valueOf(true));
 			config.setProperty("worlds."+w.getName()+".creature."+Buffer+".BlockBlacklist", "");
+			config.setProperty("worlds."+w.getName()+".creature."+Buffer+".Limit", 0);
+			config.setProperty("worlds."+w.getName()+".properties.TotalMobLimit",0);
+			config.setProperty("properties.RefrechTimer",20000);
 			
 		}
 		config.save();
@@ -89,7 +96,41 @@ public class ConfigBuffer
 					this.worldSpawns.get(w).SpawnAllowed.put(MobMap.get(Buffer), config.getBoolean("worlds."+ w.getName() +".creature."+Buffer+".spawn", true));
 					this.worldSpawns.get(w).BlockBlacklist.put(MobMap.get(Buffer), getBlacklist(config.getString("worlds."+w.getName()+".creature."+Buffer+".BlockBlacklist", "")));
 					
+					if(config.getProperty("worlds."+w.getName()+".creature."+Buffer+".Limit")!= null){
+						
+					this.worldSpawns.get(w).MobLimit.put(MobMap.get(Buffer),config.getInt("worlds."+w.getName()+".creature."+Buffer+".Limit", 0));
+					
+					} else {
+						
+						config.setProperty("worlds."+w.getName()+".creature."+Buffer+".Limit", 0);
+						config.save();
+						this.worldSpawns.get(w).MobLimit.put(MobMap.get(Buffer),config.getInt("worlds."+w.getName()+".creature."+Buffer+".Limit", 0));
+					}
+
 				}
+				
+				if(config.getProperty("worlds."+w.getName()+".properties.TotalMobLimit")!= null){
+					
+					this.worldSpawns.get(w).TotalMobLimit = config.getInt("worlds."+w.getName()+".properties.TotalMobLimit", 0);
+					
+					} else {
+						
+						config.setProperty("worlds."+w.getName()+".properties.TotalMobLimit",0);
+						config.save();
+						this.worldSpawns.get(w).TotalMobLimit = config.getInt("worlds."+w.getName()+".properties.TotalMobLimit", 0);
+						//System.out.println("HHHHHHAAAAAAAAAAAAAAAAAAAAAALO");
+						
+					}
+					if(config.getProperty("properties.RefrechTimer")!= null){
+					
+					this.CountTimer = config.getInt("properties.RefrechTimer", 20000);
+					
+					} else {
+						
+						config.setProperty("properties.RefrechTimer", 20000);
+						config.save();
+						this.CountTimer = config.getInt("properties.RefrechTimer", 20000);
+					}
 			}
 		}
 		
