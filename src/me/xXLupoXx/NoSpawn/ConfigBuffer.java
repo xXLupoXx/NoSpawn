@@ -58,7 +58,7 @@ public class ConfigBuffer
 				config.setProperty("worlds."+w.getName()+".creature."+Buffer+".BlockBlacklist", "");
 				config.setProperty("worlds."+w.getName()+".creature."+Buffer+".Limit", 0);
 				config.setProperty("worlds."+w.getName()+".properties.TotalMobLimit",0);
-				config.setProperty("properties.RefrechTimer",20000);
+				config.setProperty("properties.RefreshTimer",20000);
 				
 			}
     	}
@@ -75,7 +75,7 @@ public class ConfigBuffer
 			config.setProperty("worlds."+w.getName()+".creature."+Buffer+".BlockBlacklist", "");
 			config.setProperty("worlds."+w.getName()+".creature."+Buffer+".Limit", 0);
 			config.setProperty("worlds."+w.getName()+".properties.TotalMobLimit",0);
-			config.setProperty("properties.RefrechTimer",20000);
+			config.setProperty("properties.RefreshTimer",20000);
 			
 		}
 		config.save();
@@ -121,16 +121,27 @@ public class ConfigBuffer
 						//System.out.println("HHHHHHAAAAAAAAAAAAAAAAAAAAAALO");
 						
 					}
-					if(config.getProperty("properties.RefrechTimer")!= null){
+					if(config.getProperty("properties.RefreshTimer")!= null){
 					
-					this.CountTimer = config.getInt("properties.RefrechTimer", 20000);
+					this.CountTimer = config.getInt("properties.RefreshTimer", 20000);
 					
 					} else {
 						
-						config.setProperty("properties.RefrechTimer", 20000);
+						if(config.getProperty("properties.RefrechTimer")!= null){
+							int tmp2 = config.getInt("properties.RefrechTimer", 20000);
+							config.removeProperty("properties.RefrechTimer");
+							config.setProperty("properties.RefreshTimer", tmp2);
+							config.save();
+							this.CountTimer = config.getInt("properties.RefreshTimer", 20000);
+						}else {
+						
+						config.setProperty("properties.RefreshTimer", 20000);
 						config.save();
-						this.CountTimer = config.getInt("properties.RefrechTimer", 20000);
+						this.CountTimer = config.getInt("properties.RefreshTimer", 20000);
+						}
 					}
+					
+					
 			}
 		}
 		

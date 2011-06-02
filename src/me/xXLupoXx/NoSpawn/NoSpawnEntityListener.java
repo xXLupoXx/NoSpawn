@@ -2,7 +2,6 @@ package me.xXLupoXx.NoSpawn;
 
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.util.config.Configuration;
 

@@ -120,7 +120,7 @@ public class CommandHandler {
 				  return false;
 			  }
 			  
-				  config.setProperty("properties.RefrechTimer", Integer.parseInt(args[1]));
+				  config.setProperty("properties.RefreshTimer", Integer.parseInt(args[1]));
 				  cb.plugin.sendNospawnMessage(sender, "Timer set to "+args[1]+" milliseconds!",ChatColor.GREEN );
 				  
 				  config.save();
