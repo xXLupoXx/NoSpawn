@@ -73,11 +73,10 @@ public class NoSpawn extends JavaPlugin
 
   }
 
-  @SuppressWarnings("deprecation")
+
 public void onDisable()
   {
 	cb.worldSpawns = null;
-	mc.stop();
     PluginDescriptionFile pdfFile = getDescription();
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled... Oh my god they are coming!!!");
   }

@@ -20,6 +20,8 @@ public class NoSpawnEntityListener extends EntityListener
 
   public void onCreatureSpawn(CreatureSpawnEvent event)
   {
+	  if(cb.plugin.isEnabled()){
+	  
 		if(config.getKeys("worlds") != null && config.getKeys("worlds").contains(event.getEntity().getWorld().getName()))
 		{
 			if(cb.worldSpawns.containsKey(event.getEntity().getWorld()))
@@ -47,5 +49,6 @@ public class NoSpawnEntityListener extends EntityListener
 				event.setCancelled(true);
 			}
 		}
+	  }
   }
 }

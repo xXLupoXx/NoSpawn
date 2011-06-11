@@ -122,10 +122,11 @@ public class CommandHandler {
 			  
 				  config.setProperty("properties.RefreshTimer", Integer.parseInt(args[1]));
 				  cb.plugin.sendNospawnMessage(sender, "Timer set to "+args[1]+" milliseconds!",ChatColor.GREEN );
-				  
 				  config.save();
-				  
 				  cb.readConfig();
+				  
+				  server.getScheduler().cancelTasks(cb.plugin);
+				  cb.plugin.mc.runSchedueler();
 				  
 				  return true;
 			  
