@@ -77,6 +77,7 @@ public class NoSpawn extends JavaPlugin
 public void onDisable()
   {
 	cb.worldSpawns = null;
+	getServer().getScheduler().cancelTasks(this);
     PluginDescriptionFile pdfFile = getDescription();
     System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled... Oh my god they are coming!!!");
   }

@@ -20,6 +20,14 @@ public class NoSpawnEntityListener extends EntityListener
 
   public void onCreatureSpawn(CreatureSpawnEvent event)
   {
+	  if(event.equals(null)|| event.getLocation().getWorld().equals(null)){
+		  return;
+	  }
+	  
+	  if(config.equals(null) || cb.equals(null)){
+		  return;
+	  }
+	  
 	  if(cb.plugin.isEnabled()){
 	  
 		if(config.getKeys("worlds") != null && config.getKeys("worlds").contains(event.getEntity().getWorld().getName()))

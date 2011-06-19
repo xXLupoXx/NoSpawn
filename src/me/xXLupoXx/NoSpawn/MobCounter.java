@@ -48,7 +48,7 @@ public class MobCounter {
 	
 	public void runSchedueler(){
 		
-		server.getScheduler().scheduleAsyncRepeatingTask(cb.plugin, new Runnable() {
+		server.getScheduler().scheduleSyncRepeatingTask(cb.plugin, new Runnable() {
 			public void run(){
 
 					  for(World w : server.getWorlds())
