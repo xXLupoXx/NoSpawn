@@ -2,6 +2,9 @@ name: NoSpawn
 main: me.xXLupoXx.NoSpawn.NoSpawn
 author: xXLupoXx
 version: 1.5.2
+website: http://forums.bukkit.org/threads/13926/
+softdepend: [Permissions]
 commands:
   nospawn:
     description: NoSpawn commands
+    usage: 'Syntax: /<command> <allowspawn, denyspawn, despawn, spawn, setmoblimit, settotalmoblimit or settimer> <value>'
