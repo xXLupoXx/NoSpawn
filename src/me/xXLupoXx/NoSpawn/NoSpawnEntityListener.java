@@ -39,7 +39,7 @@ public class NoSpawnEntityListener extends EntityListener {
 								.isSpawnAllowed(
 										event.getCreatureType(),
 										event.getLocation().getBlock()
-												.getFace(BlockFace.DOWN),
+												.getRelative(BlockFace.DOWN),
 										event.getLocation()) == false) {
 							event.setCancelled(true);
 							tmp--;
