@@ -1,16 +1,11 @@
 package me.xXLupoXx.NoSpawn;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.nijiko.permissions.PermissionHandler;
 import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.util.config.Configuration;
 
-import com.nijiko.permissions.PermissionHandler;
+import java.util.*;
 
 public class ConfigBuffer {
 	public Map<org.bukkit.World, Spawns> worldSpawns = new HashMap<org.bukkit.World, Spawns>();
@@ -47,20 +42,16 @@ public class ConfigBuffer {
 
 		for (World w : plugin.getServer().getWorlds()) {
 			String Buffer;
-			Iterator<String> Mobs = MobMap.keySet().iterator();
 
-			while (Mobs.hasNext()) {
-				Buffer = Mobs.next();
-				config.setProperty("worlds." + w.getName() + ".creature."
-						+ Buffer + ".spawn", Boolean.valueOf(true));
-				config.setProperty("worlds." + w.getName() + ".creature."
-						+ Buffer + ".BlockBlacklist", "");
-				config.setProperty("worlds." + w.getName() + ".creature."
-						+ Buffer + ".Limit", 0);
-				config.setProperty("worlds." + w.getName()
-						+ ".properties.TotalMobLimit", 0);
-				config.setProperty("properties.RefreshTimer", 20000);
-			}
+            for (String s : MobMap.keySet())
+            {
+                Buffer = s;
+                config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
+                config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
+                config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
+                config.setProperty("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+                config.setProperty("properties.RefreshTimer", 60000);
+            }
 		}
 		config.save();
 	}
@@ -68,20 +59,16 @@ public class ConfigBuffer {
 	public void addWorldToConfig(World w) {
 		
 		String Buffer;
-		Iterator<String> Mobs = MobMap.keySet().iterator();
-		while (Mobs.hasNext()) {
-			Buffer = Mobs.next();
-			config.setProperty("worlds." + w.getName() + ".creature." + Buffer
-					+ ".spawn", Boolean.valueOf(true));
-			config.setProperty("worlds." + w.getName() + ".creature." + Buffer
-					+ ".BlockBlacklist", "");
-			config.setProperty("worlds." + w.getName() + ".creature." + Buffer
-					+ ".Limit", 0);
-			config.setProperty("worlds." + w.getName()
-					+ ".properties.TotalMobLimit", 0);
-			config.setProperty("properties.RefreshTimer", 20000);
+        for (String s : MobMap.keySet())
+        {
+            Buffer = s;
+            config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
+            config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
+            config.setProperty("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
+            config.setProperty("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+            config.setProperty("properties.RefreshTimer", 60000);
 
-		}
+        }
 		config.save();
 	}
 
@@ -150,21 +137,10 @@ public class ConfigBuffer {
 
 				} else {
 
-					if (config.getProperty("properties.RefrechTimer") != null) {
-						int tmp2 = config.getInt("properties.RefrechTimer",
-								20000);
-						config.removeProperty("properties.RefrechTimer");
-						config.setProperty("properties.RefreshTimer", tmp2);
-						config.save();
-						this.CountTimer = config.getInt(
-								"properties.RefreshTimer", 20000);
-					} else {
-
-						config.setProperty("properties.RefreshTimer", 20000);
-						config.save();
-						this.CountTimer = config.getInt(
-								"properties.RefreshTimer", 20000);
-					}
+					config.setProperty("properties.RefreshTimer", 60000);
+					config.save();
+					this.CountTimer = config.getInt(
+							"properties.RefreshTimer", 60000);
 				}
 
 			}
@@ -177,9 +153,10 @@ public class ConfigBuffer {
 			String[] arr = args.split(";");
 			List<Integer> tmplist = new LinkedList<Integer>();
 
-			for (int i = 0; i < arr.length; i++) {
-				tmplist.add(Integer.valueOf(Integer.parseInt(arr[i].trim())));
-			}
+            for (String anArr : arr)
+            {
+                tmplist.add(Integer.parseInt(anArr.trim()));
+            }
 
 			return tmplist;
 		}

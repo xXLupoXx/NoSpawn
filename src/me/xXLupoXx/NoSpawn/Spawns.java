@@ -1,11 +1,11 @@
 package me.xXLupoXx.NoSpawn;
 
+import org.bukkit.block.Block;
+import org.bukkit.entity.CreatureType;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 
 public class Spawns {
 	public Map<org.bukkit.entity.CreatureType, Boolean> SpawnAllowed = new HashMap<org.bukkit.entity.CreatureType, Boolean>();
@@ -21,7 +21,7 @@ public class Spawns {
 		this.cb = cb;
 	}
 
-	public boolean isSpawnAllowed(org.bukkit.entity.CreatureType type, Block block, Location spawnLoc) {
+	public boolean isSpawnAllowed(CreatureType type, Block block) {
 		if ((getCurrentTotalMobsCount() >= TotalMobLimit) && TotalMobLimit != 0) {
 			// System.out.println(CurrentTotalMobs + " "+ TotalMobLimit);
 			return false;
@@ -33,7 +33,7 @@ public class Spawns {
 			return false;
 		}
 
-		if (SpawnAllowed.containsKey(type) && SpawnAllowed.get(type) == true) {
+		if (SpawnAllowed.containsKey(type) && SpawnAllowed.get(type)) {
 			if (BlockBlacklist.get(type) != null) {
 
 				if (BlockBlacklist.get(type).contains(block.getTypeId())) {
