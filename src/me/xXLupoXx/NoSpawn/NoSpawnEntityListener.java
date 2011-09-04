@@ -17,11 +17,11 @@ public class NoSpawnEntityListener extends EntityListener {
 	}
 
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		if (event.isCancelled() == true) {
+		if (event.isCancelled()) {
 			return;
 		}
 
-		if (config.equals(null) || cb.equals(null)) {
+		if (config == null || cb == null) {
 			return;
 		}
 
@@ -35,12 +35,7 @@ public class NoSpawnEntityListener extends EntityListener {
 						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount
 								.get(event.getCreatureType());
 						tmp++;
-						if (cb.worldSpawns.get(event.getEntity().getWorld())
-								.isSpawnAllowed(
-										event.getCreatureType(),
-										event.getLocation().getBlock()
-												.getRelative(BlockFace.DOWN),
-										event.getLocation()) == false) {
+						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getCreatureType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
 							event.setCancelled(true);
 							tmp--;
 						}

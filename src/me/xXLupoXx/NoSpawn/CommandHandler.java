@@ -1,12 +1,12 @@
 package me.xXLupoXx.NoSpawn;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.util.config.Configuration;
+
+import java.util.List;
 
 public class CommandHandler {
 
@@ -158,7 +158,7 @@ public class CommandHandler {
 			return false;
 		}
 
-		List<Entity> le = new LinkedList<Entity>();
+		List<Entity> le;
 
 		if (args.length < 3) {
 			cb.plugin
@@ -183,183 +183,196 @@ public class CommandHandler {
 
 		if (mob.equals("pig")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Pig) {
-					le.get(i).remove();
-					killcount++;
-					;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Pig)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Pigs from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("sheep")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Sheep) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Sheep)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Sheeps from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("cow")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Cow) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Cow)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Cows from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("chicken")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Chicken) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Chicken)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Chickens from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("zombie_pigman")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof PigZombie) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof PigZombie)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Zombie Pigmen from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("squid")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Squid) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Squid)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Squids from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("wolf")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Wolf) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Wolf)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Wolfs from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("zombie")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Zombie) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Zombie)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Zombies from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("skeleton")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Skeleton) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Skeleton)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Skeletons from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("spider")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Spider) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Spider)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Spiders from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("creeper")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Creeper) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Creeper)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Creeper from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("slime")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Slime) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Slime)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Slimes from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("ghast")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Ghast) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Ghast)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Ghasts from " + w, ChatColor.GREEN);
 			return true;
 
 		} else if (mob.equals("giant")) {
 
-			for (int i = 0; i < le.size(); i++) {
-
-				if (le.get(i) instanceof Giant) {
-					le.get(i).remove();
-					killcount++;
-				}
-			}
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Giant)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
 			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
 					+ " Giants from " + w, ChatColor.GREEN);
 			return true;
@@ -449,7 +462,7 @@ public class CommandHandler {
 
 	private boolean checkPerm(CommandSender sender, String perm) {
 
-		Player player = null;
+		Player player;
 
 		if (sender instanceof Player) {
 			player = (Player) sender;
