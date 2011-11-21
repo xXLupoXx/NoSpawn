@@ -4,11 +4,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityListener;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class NoSpawnEntityListener extends EntityListener {
 	ConfigBuffer cb;
-	Configuration config;
+	FileConfiguration config;
 	int tmp = 0;
 
 	public NoSpawnEntityListener(ConfigBuffer cb) {
@@ -27,9 +27,7 @@ public class NoSpawnEntityListener extends EntityListener {
 
 		if (cb.plugin.isEnabled()) {
 			if (event.getSpawnReason() != SpawnReason.CUSTOM) {
-				if (config.getKeys("worlds") != null
-						&& config.getKeys("worlds").contains(
-								event.getEntity().getWorld().getName())) {
+				if (config.get("worlds") != null) {
 					if (cb.worldSpawns
 							.containsKey(event.getEntity().getWorld())) {
 						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount

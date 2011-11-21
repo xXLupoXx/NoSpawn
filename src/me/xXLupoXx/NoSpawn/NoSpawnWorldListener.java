@@ -3,12 +3,12 @@ package me.xXLupoXx.NoSpawn;
 import org.bukkit.World;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class NoSpawnWorldListener extends WorldListener {
 
 	ConfigBuffer cb;
-	Configuration config;
+	FileConfiguration config;
 
 	public NoSpawnWorldListener(ConfigBuffer cb) {
 		this.cb = cb;
@@ -20,8 +20,7 @@ public class NoSpawnWorldListener extends WorldListener {
 		World w = event.getWorld();
 		cb.worldSpawns.put(w, new Spawns(cb));
 
-		if (config.getKeys("worlds") != null
-				&& config.getKeys("worlds").contains(w.getName())) {
+		if (config.get("worlds") != null) {
 			cb.readConfig();
 
 		} else {

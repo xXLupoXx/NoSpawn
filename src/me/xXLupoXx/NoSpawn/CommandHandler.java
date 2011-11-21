@@ -4,21 +4,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CommandHandler {
 
 	Server server;
 	ConfigBuffer cb;
-	Configuration config;
+	FileConfiguration config;
 	boolean hasPermission = false;
 
 	public CommandHandler(Server server, ConfigBuffer cb) {
 		this.server = server;
 		this.cb = cb;
-		this.config = cb.plugin.getConfiguration();
+        this.config = cb.config;
 	}
 
 	public boolean allowSpawn(CommandSender sender, String[] args) {
@@ -137,10 +138,10 @@ public class CommandHandler {
 			return false;
 		}
 
-		config.setProperty("properties.RefreshTimer", Integer.parseInt(args[1]));
+		config.set("properties.RefreshTimer", Integer.parseInt(args[1]));
 		cb.plugin.sendNospawnMessage(sender, "Timer set to " + args[1]
 				+ " milliseconds!", ChatColor.GREEN);
-		config.save();
+		saveConfig();
 		cb.readConfig();
 
 		server.getScheduler().cancelTasks(cb.plugin);
@@ -405,24 +406,21 @@ public class CommandHandler {
 		if (ConfigBuffer.MobMap.containsKey(mob)) {
 
 			if (operation.equals("allow")) {
-				config.setProperty("worlds." + w + ".creature." + mob
-						+ ".spawn", true);
+				config.set("worlds." + w + ".creature." + mob + ".spawn", true);
 				cb.plugin.sendNospawnMessage(sender,
 						mob + "s are now enabled!", ChatColor.GREEN);
 			} else if (operation.equals("deny")) {
-				config.setProperty("worlds." + w + ".creature." + mob
-						+ ".spawn", false);
+				config.set("worlds." + w + ".creature." + mob + ".spawn", false);
 				cb.plugin.sendNospawnMessage(sender, mob
 						+ "s are now disabled!", ChatColor.GREEN);
 			} else if (operation.equals("moblimit")) {
-				config.setProperty("worlds." + w + ".creature." + mob
-						+ ".Limit", Integer.parseInt(args[3]));
+				config.set("worlds." + w + ".creature." + mob + ".Limit", Integer.parseInt(args[3]));
 				cb.plugin.sendNospawnMessage(sender, mob
 						+ "s are now limited to " + args[3] + " !",
 						ChatColor.GREEN);
 			}
 
-			config.save();
+			saveConfig();
 
 			cb.readConfig();
 
@@ -447,13 +445,13 @@ public class CommandHandler {
 			return false;
 		}
 		if (operation.equals("totalmoblimit")) {
-			config.setProperty("worlds." + w + ".properties.TotalMobLimit",
+			config.set("worlds." + w + ".properties.TotalMobLimit",
 					Integer.parseInt(args[2]));
 			cb.plugin.sendNospawnMessage(sender, "Mobs are now limited to "
 					+ args[2] + " !", ChatColor.GREEN);
 		}
 
-		config.save();
+		saveConfig();
 
 		cb.readConfig();
 
@@ -499,4 +497,17 @@ public class CommandHandler {
 			return false;
 		}
 	}
+
+
+    private void saveConfig()
+    {
+       // try
+       // {
+		cb.plugin.saveConfig();
+      //  }
+        //catch(IOException io){
+       // }
+    }
+
 }
+

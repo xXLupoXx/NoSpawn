@@ -27,7 +27,7 @@ public class NoSpawn extends JavaPlugin {
 			cb.worldSpawns.put(w, new Spawns(cb));
 		}
 
-		if(this.getConfiguration().getKeys("worlds") == null)
+		if(this.getConfig().get("worlds") == null)
 		{
 			cb.setupConfig();
 		}
