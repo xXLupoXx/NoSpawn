@@ -1,7 +1,7 @@
 name: NoSpawn
 main: me.xXLupoXx.NoSpawn.NoSpawn
 author: xXLupoXx
-version: 1.5.4
+version: 1.5.5
 website: http://forums.bukkit.org/threads/13926/
 softdepend: [Permissions]
 commands:
