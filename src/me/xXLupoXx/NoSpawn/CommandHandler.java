@@ -378,6 +378,104 @@ public class CommandHandler {
 					+ " Giants from " + w, ChatColor.GREEN);
 			return true;
 
+		} else if (mob.equals("enderman")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Enderman)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Enderman from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("enderdragon")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof EnderDragon)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Enderdragons from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("blaze")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Blaze)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Blaze from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("villager")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Villager)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Villagers from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("silverfish")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof Silverfish)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Silverfish from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("cave_spider")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof CaveSpider)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Cave Spiders from " + w, ChatColor.GREEN);
+			return true;
+
+		} else if (mob.equals("mooshroom")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof MushroomCow)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Mooshrooms from " + w, ChatColor.GREEN);
+			return true;
+
 		} else {
 
 			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]

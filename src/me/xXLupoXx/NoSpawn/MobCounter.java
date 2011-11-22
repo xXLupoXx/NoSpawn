@@ -2,23 +2,7 @@ package me.xXLupoXx.NoSpawn;
 
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Ghast;
-import org.bukkit.entity.Giant;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Squid;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
-
+import org.bukkit.entity.*;
 public class MobCounter {
 
 	Server server;
@@ -52,6 +36,13 @@ public class MobCounter {
 					int tmpCountGhast = 0;
 					int tmpCountSlime = 0;
 					int tmpCountSquid = 0;
+                    int tmpCountMooshroom = 0;
+                    int tmpCountVillager = 0;
+                    int tmpCountEnderman = 0;
+                    int tmpCountBlaze = 0;
+                    int tmpCountCaveSpider = 0;
+                    int tmpCountSilverfish = 0;
+                    int tmpCountEnderdragon = 0;
 
 					for (LivingEntity e : w.getLivingEntities()) {
 						if (e instanceof Pig) {
@@ -110,6 +101,34 @@ public class MobCounter {
 
 							tmpCountSheep++;
 
+						} else if (e instanceof Villager) {
+
+							tmpCountVillager++;
+
+						} else if (e instanceof Enderman) {
+
+							tmpCountEnderman++;
+
+						} else if (e instanceof Blaze) {
+
+							tmpCountBlaze++;
+
+						} else if (e instanceof CaveSpider) {
+
+							tmpCountCaveSpider++;
+
+						} else if (e instanceof Silverfish) {
+
+							tmpCountSilverfish++;
+
+						} else if (e instanceof EnderDragon) {
+
+							tmpCountEnderdragon++;
+
+						} else if (e instanceof MushroomCow) {
+
+							tmpCountMooshroom++;
+
 						}
 					}
 
@@ -141,6 +160,20 @@ public class MobCounter {
 							CreatureType.SQUID, tmpCountSquid);
 					cb.worldSpawns.get(w).CurrentMobCount.put(
 							CreatureType.SPIDER, tmpCountSpider);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.VILLAGER, tmpCountVillager);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.CAVE_SPIDER, tmpCountCaveSpider);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.MUSHROOM_COW, tmpCountMooshroom);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.ENDER_DRAGON, tmpCountEnderdragon);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.ENDERMAN, tmpCountEnderman);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.SILVERFISH, tmpCountSilverfish);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+							CreatureType.BLAZE, tmpCountBlaze);
 
 				}
 			}
