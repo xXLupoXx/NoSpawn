@@ -1,9 +1,9 @@
 package me.xXLupoXx.NoSpawn;
 
-import com.nijiko.permissions.PermissionHandler;
 import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.configuration.file.FileConfiguration;
+import ru.tehkode.permissions.PermissionManager;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class ConfigBuffer {
         MobMap.put("Silverfish", CreatureType.SILVERFISH);
         MobMap.put("Enderdragon", CreatureType.ENDER_DRAGON);
 	}
-	public PermissionHandler Permissions;
+	public PermissionManager Permissions;
 	public NoSpawn plugin;
 	public int CountTimer;
 	//public Configuration config;

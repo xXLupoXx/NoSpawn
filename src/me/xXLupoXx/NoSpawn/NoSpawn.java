@@ -10,7 +10,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijikokun.bukkit.Permissions.Permissions;
+//import com.nijikokun.bukkit.Permissions.Permissions;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class NoSpawn extends JavaPlugin {
 	NoSpawnEntityListener el;
@@ -125,12 +126,10 @@ public class NoSpawn extends JavaPlugin {
 	}
 
 	private boolean setupPermissions() {
-		Plugin perm = this.getServer().getPluginManager()
-				.getPlugin("Permissions");
 
 		if (cb.Permissions == null) {
-			if (perm != null) {
-				cb.Permissions = ((Permissions) perm).getHandler();
+			if(getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+				cb.Permissions = PermissionsEx.getPermissionManager();
 				return true;
 
 			} else {
