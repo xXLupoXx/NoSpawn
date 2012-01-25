@@ -1,12 +1,14 @@
 package me.xXLupoXx.NoSpawn;
 
 import org.bukkit.block.BlockFace;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class NoSpawnEntityListener extends EntityListener {
+public class NoSpawnEntityListener implements Listener {
 	ConfigBuffer cb;
 	FileConfiguration config;
 	int tmp = 0;
@@ -15,8 +17,8 @@ public class NoSpawnEntityListener extends EntityListener {
 		this.cb = cb;
 		this.config = cb.config;
 	}
-
-	public void onCreatureSpawn(CreatureSpawnEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
 		if (event.isCancelled()) {
 			return;
 		}

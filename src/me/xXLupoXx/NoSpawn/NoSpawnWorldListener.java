@@ -1,11 +1,13 @@
 package me.xXLupoXx.NoSpawn;
 
 import org.bukkit.World;
-import org.bukkit.event.world.WorldListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class NoSpawnWorldListener extends WorldListener {
+public class NoSpawnWorldListener implements Listener{
 
 	ConfigBuffer cb;
 	FileConfiguration config;
@@ -14,7 +16,7 @@ public class NoSpawnWorldListener extends WorldListener {
 		this.cb = cb;
 		this.config = cb.config;
 	}
-
+    @EventHandler(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldLoadEvent event) {
 
 		World w = event.getWorld();

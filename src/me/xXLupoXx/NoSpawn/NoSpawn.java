@@ -55,10 +55,8 @@ public class NoSpawn extends JavaPlugin {
 		System.out.println(pdfFile.getName() + " version "
 				+ pdfFile.getVersion() + " is enabled!");
 
-		getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN,
-				this.el, Event.Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.WORLD_LOAD,
-				this.wl, Event.Priority.Normal, this);
+		getServer().getPluginManager().registerEvents(this.el, this);
+		getServer().getPluginManager().registerEvents(this.wl, this);
 
 	}
 
