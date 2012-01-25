@@ -32,6 +32,7 @@ public class NoSpawn extends JavaPlugin {
 		{
 			cb.setupConfig();
 		}
+        cb.checkConfig();
 
 		cb.readConfig();
 

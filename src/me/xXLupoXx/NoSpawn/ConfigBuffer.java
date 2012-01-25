@@ -3,6 +3,7 @@ package me.xXLupoXx.NoSpawn;
 import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginDescriptionFile;
 import ru.tehkode.permissions.PermissionManager;
 
 import java.util.*;
@@ -47,6 +48,8 @@ public class ConfigBuffer {
 
 	public void setupConfig() {
 
+        config.set("version", plugin.getDescription().getVersion());
+
 		for (World w : plugin.getServer().getWorlds()) {
 			String Buffer;
 
@@ -56,10 +59,10 @@ public class ConfigBuffer {
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
-                config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
-                config.set("properties.RefreshTimer", 60000);
             }
+            config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
 		}
+        config.set("properties.RefreshTimer", 60000);
         saveConfig();
 	}
 
@@ -72,9 +75,8 @@ public class ConfigBuffer {
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
-            config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
-            config.set("properties.RefreshTimer", 60000);
         }
+        config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
 		saveConfig();
 	}
 
@@ -179,5 +181,44 @@ public class ConfigBuffer {
        // }
       //  catch(IOException io){
        // }
+    }
+
+    public void checkConfig()
+    {
+
+        if(config.get("version") == null || config.getDouble("version") < Double.parseDouble(plugin.getDescription().getVersion())){
+            repairConfig();
+        }
+    }
+
+    public void repairConfig()
+    {
+        String Buffer;
+        config.set("version",plugin.getDescription().getVersion());
+            for (World w : plugin.getServer().getWorlds()) {
+
+                for (String s : MobMap.keySet())
+                {
+                    Buffer = s;
+                    if (config.get("worlds." + w.getName() + ".creature." + Buffer + ".spawn") == null){
+                        config.set("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
+                    }
+                    if(config.get("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist") == null){
+                        config.set("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
+                    }
+                    if(config.get("worlds." + w.getName() + ".creature." + Buffer + ".Limit") == null ){
+                        config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
+                    }
+                }
+
+                if(config.get("worlds." + w.getName() + ".properties.TotalMobLimit") == null){
+                   config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+                }
+            }
+            if(config.get("properties.RefreshTimer") == null){
+                config.set("properties.RefreshTimer", 60000);
+            }
+            saveConfig();
+
     }
 }
