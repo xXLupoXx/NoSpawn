@@ -117,7 +117,11 @@ public class NoSpawn extends JavaPlugin {
 
 					return cmh.setMobTimer(sender, args);
 
-				} else {
+				} else if (args[0].equals("usegbbl")) {
+
+                    return cmh.setUseGlobalBlockBlacklist(sender, args);
+
+                } else {
 
 					sendNospawnMessage(
 							sender,

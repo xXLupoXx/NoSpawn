@@ -75,8 +75,10 @@ public class ConfigBuffer {
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
                 config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
+                config.set("worlds." + w.getName() + ".creature." + Buffer + ".UseGlobalBlockBlacklist", true);
             }
             config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+            config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
 		}
         config.set("properties.RefreshTimer", 60000);
         saveConfig();
@@ -91,8 +93,10 @@ public class ConfigBuffer {
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".spawn", true);
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".BlockBlacklist", "");
             config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
+            config.set("worlds." + w.getName() + ".creature." + Buffer + ".UseGlobalBlockBlacklist", true);
         }
         config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+        config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
 		saveConfig();
 	}
 
@@ -116,6 +120,11 @@ public class ConfigBuffer {
 									"worlds." + w.getName() + ".creature."
 											+ Buffer + ".BlockBlacklist", "")));
 
+                    this.worldSpawns.get(w).UseGlobalBlockBlacklist.put(
+                            MobMap.get(Buffer),
+                            config.getBoolean("worlds." + w.getName() + ".creature."
+                                    + Buffer + ".UseGlobalBlockBlacklist", true));
+
 					if (config.get("worlds." + w.getName()
 							+ ".creature." + Buffer + ".Limit") != null) {
 
@@ -136,6 +145,9 @@ public class ConfigBuffer {
 					}
 
 				}
+
+                this.worldSpawns.get(w).GlobalBlockBlacklist = getBlacklist(
+                        config.getString("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", ""));
 
 				if (config.get("worlds." + w.getName()
 						+ ".properties.TotalMobLimit") != null) {
@@ -222,10 +234,16 @@ public class ConfigBuffer {
                     if(config.get("worlds." + w.getName() + ".creature." + Buffer + ".Limit") == null ){
                         config.set("worlds." + w.getName() + ".creature." + Buffer + ".Limit", 0);
                     }
+                    if(config.get("worlds." + w.getName() + ".creature." + Buffer + ".UseGlobalBlockBlacklist") == null){
+                        config.set("worlds." + w.getName() + ".creature." + Buffer + ".UseGlobalBlockBlacklist", true);
+                    }
                 }
 
                 if(config.get("worlds." + w.getName() + ".properties.TotalMobLimit") == null){
                    config.set("worlds." + w.getName() + ".properties.TotalMobLimit", 0);
+                }
+                if(config.get("worlds." + w.getName() + ".properties.GlobalBlockBlacklist") == null){
+                   config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
                 }
             }
             if(config.get("properties.RefreshTimer") == null){

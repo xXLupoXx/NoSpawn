@@ -38,6 +38,68 @@ public class CommandHandler {
         this.config = cb.config;
 	}
 
+    public boolean setUseGlobalBlockBlacklist(CommandSender sender, String[] args){
+
+         hasPermission = checkPerm(sender, "useglobalblockblacklist");
+
+         if (!hasPermission) {
+			return false;
+		 }
+
+            if (args.length < 4) {
+			cb.plugin
+					.sendNospawnMessage(
+							sender,
+							"Invalid number of arguments! Usage is /nospawn usegbbl <world> <monster> <true/false>",
+							ChatColor.RED);
+			return false;
+		}
+
+        if (this.server.getWorld(args[1]) == null) {
+
+			cb.plugin.sendNospawnMessage(sender, "This world does not exist!",
+					ChatColor.RED);
+			return false;
+		}
+
+        if (ConfigBuffer.MobMap.containsKey(args[2])) {
+
+        if(args[3].equals("true")){
+            config.set("worlds." + args[1] + ".creature." + args[2] + ".UseGlobalBlockBlacklist", true);
+
+            		cb.plugin
+					.sendNospawnMessage(
+							sender,
+							args[2] + "now use the global Blockblacklist",
+							ChatColor.GREEN);
+
+            saveConfig();
+            cb.readConfig();
+        }
+        else if(args[3].equals("false")){
+            config.set("worlds." + args[1] + ".creature." + args[2] + ".UseGlobalBlockBlacklist", false);
+
+                    cb.plugin
+					.sendNospawnMessage(
+							sender,
+							args[2] + "now don't use the global Blockblacklist",
+							ChatColor.GREEN);
+
+            saveConfig();
+            cb.readConfig();
+        }
+
+            return true;
+
+        } else {
+			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]
+					+ " does not exist!", ChatColor.RED);
+			return false;
+		}
+
+
+    }
+
 	public boolean allowSpawn(CommandSender sender, String[] args) {
 
 		hasPermission = checkPerm(sender, "allowspawn");
