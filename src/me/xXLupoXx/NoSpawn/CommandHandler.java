@@ -41,6 +41,12 @@ public class CommandHandler {
     public boolean setUseGlobalBlockBlacklist(CommandSender sender, String[] args){
 
          hasPermission = checkPerm(sender, "useglobalblockblacklist");
+         String mob = Character.toUpperCase(args[2].charAt(0))
+				+ args[2].substring(1, args[2].length()).toLowerCase();
+
+        if (args[2].toLowerCase().equals("zombie_pigman")) {
+			mob = "Zombie_Pigman";
+		}
 
          if (!hasPermission) {
 			return false;
@@ -62,27 +68,27 @@ public class CommandHandler {
 			return false;
 		}
 
-        if (ConfigBuffer.MobMap.containsKey(args[2])) {
+        if (ConfigBuffer.MobMap.containsKey(mob)) {
 
         if(args[3].equals("true")){
-            config.set("worlds." + args[1] + ".creature." + args[2] + ".UseGlobalBlockBlacklist", true);
+            config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", true);
 
             		cb.plugin
 					.sendNospawnMessage(
 							sender,
-							args[2] + "now use the global Blockblacklist",
+							mob + " now use the global Blockblacklist ("+ args[1] +")",
 							ChatColor.GREEN);
 
             saveConfig();
             cb.readConfig();
         }
         else if(args[3].equals("false")){
-            config.set("worlds." + args[1] + ".creature." + args[2] + ".UseGlobalBlockBlacklist", false);
+            config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", false);
 
                     cb.plugin
 					.sendNospawnMessage(
 							sender,
-							args[2] + "now don't use the global Blockblacklist",
+							mob + " now don't use the global Blockblacklist ("+ args[1] +")",
 							ChatColor.GREEN);
 
             saveConfig();
@@ -92,7 +98,7 @@ public class CommandHandler {
             return true;
 
         } else {
-			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]
+			cb.plugin.sendNospawnMessage(sender, "Creature " + mob
 					+ " does not exist!", ChatColor.RED);
 			return false;
 		}
