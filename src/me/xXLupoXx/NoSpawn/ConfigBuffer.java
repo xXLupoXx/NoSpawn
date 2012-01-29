@@ -50,6 +50,8 @@ public class ConfigBuffer {
         MobMap.put("Cave_Spider", CreatureType.CAVE_SPIDER);
         MobMap.put("Silverfish", CreatureType.SILVERFISH);
         MobMap.put("Enderdragon", CreatureType.ENDER_DRAGON);
+        MobMap.put("Magma_Cube", CreatureType.MAGMA_CUBE);
+
 	}
 	public PermissionManager Permissions;
 	public NoSpawn plugin;

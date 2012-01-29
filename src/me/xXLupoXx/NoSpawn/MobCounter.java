@@ -59,6 +59,7 @@ public class MobCounter {
                     int tmpCountCaveSpider = 0;
                     int tmpCountSilverfish = 0;
                     int tmpCountEnderdragon = 0;
+                    int tmpCoutMagmaCube = 0;
 
 					for (LivingEntity e : w.getLivingEntities()) {
 						if (e instanceof Pig) {
@@ -145,7 +146,11 @@ public class MobCounter {
 
 							tmpCountMooshroom++;
 
-						}
+						} else if (e instanceof MagmaCube) {
+
+                            tmpCoutMagmaCube++;
+                        }
+
 					}
 
 					cb.worldSpawns.get(w).CurrentMobCount.put(
@@ -190,6 +195,8 @@ public class MobCounter {
 							CreatureType.SILVERFISH, tmpCountSilverfish);
                     cb.worldSpawns.get(w).CurrentMobCount.put(
 							CreatureType.BLAZE, tmpCountBlaze);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(
+                           CreatureType.MAGMA_CUBE,tmpCoutMagmaCube);
 
 				}
 			}

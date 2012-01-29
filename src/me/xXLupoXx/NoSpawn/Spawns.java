@@ -54,7 +54,7 @@ public class Spawns {
 
 		if (SpawnAllowed.containsKey(type) && SpawnAllowed.get(type)) {
 
-            if(UseGlobalBlockBlacklist.get(type) != null){
+            if(UseGlobalBlockBlacklist.get(type) != null && GlobalBlockBlacklist != null){
 
                 if(UseGlobalBlockBlacklist.get(type) && GlobalBlockBlacklist.contains(block.getTypeId())){
                     return false;

@@ -560,6 +560,20 @@ public class CommandHandler {
 					+ " Mooshrooms from " + w, ChatColor.GREEN);
 			return true;
 
+		} else if (mob.equals("magma_cube")) {
+
+            for (Entity aLe : le)
+            {
+                if (aLe instanceof MagmaCube)
+                {
+                    aLe.remove();
+                    killcount++;
+                }
+            }
+			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+					+ " Magma Cubes from " + w, ChatColor.GREEN);
+			return true;
+
 		} else {
 
 			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]
