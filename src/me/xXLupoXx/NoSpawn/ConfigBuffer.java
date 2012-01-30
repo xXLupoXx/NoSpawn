@@ -19,7 +19,7 @@ package me.xXLupoXx.NoSpawn;
 import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
+
 import ru.tehkode.permissions.PermissionManager;
 
 import java.util.*;
@@ -56,7 +56,6 @@ public class ConfigBuffer {
 	public PermissionManager Permissions;
 	public NoSpawn plugin;
 	public int CountTimer;
-	//public Configuration config;
     public FileConfiguration config;
 
 	public ConfigBuffer(NoSpawn plugin) {
@@ -108,6 +107,8 @@ public class ConfigBuffer {
 
 		for (World w : plugin.getServer().getWorlds()) {
 			Iterator<String> Mobs = MobMap.keySet().iterator();
+
+
 
 			if (config.get("worlds") != null) {
 				while (Mobs.hasNext()) {

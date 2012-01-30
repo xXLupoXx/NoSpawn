@@ -22,16 +22,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.configuration.file.FileConfiguration;
+
 
 public class NoSpawnEntityListener implements Listener {
 	ConfigBuffer cb;
-	FileConfiguration config;
 	int tmp = 0;
 
 	public NoSpawnEntityListener(ConfigBuffer cb) {
 		this.cb = cb;
-		this.config = cb.config;
 	}
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
@@ -39,13 +37,13 @@ public class NoSpawnEntityListener implements Listener {
 			return;
 		}
 
-		if (config == null || cb == null) {
+		if (cb.config == null) {
 			return;
 		}
 
 		if (cb.plugin.isEnabled()) {
 			if (event.getSpawnReason() != SpawnReason.CUSTOM) {
-				if (config.get("worlds") != null) {
+				if (cb.config.get("worlds") != null) {
 					if (cb.worldSpawns
 							.containsKey(event.getEntity().getWorld())) {
 						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount

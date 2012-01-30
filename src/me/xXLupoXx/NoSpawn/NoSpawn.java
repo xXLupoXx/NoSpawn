@@ -21,8 +21,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -89,7 +87,7 @@ public class NoSpawn extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
-
+        
 		if (command.getName().equals("nospawn")) {
 
 			if (args.length > 0) {
@@ -121,12 +119,25 @@ public class NoSpawn extends JavaPlugin {
 
                     return cmh.setUseGlobalBlockBlacklist(sender, args);
 
+                } else if (args[0].equals("addgbbl")|| args[0].equals("delgbbl")) {
+
+                    return cmh.editGlobalBlockBlacklist(sender, args);
+
+                } else if (args[0].equals("addbl")|| args[0].equals("delbl")) {
+
+                    return cmh.editBlockBlacklist(sender, args);
+
+                } else if (args[0].equals("reloadconf")) {
+
+                    return cmh.reloadConf(sender);
+
                 } else {
 
 					sendNospawnMessage(
 							sender,
 							args[0]
-									+ " isn't a valid parameter! Please use allowspawn, denyspawn, despawn, setmoblimit, settotalmoblimit or settimer ",
+									+ " isn't a valid parameter! Please use allowspawn, denyspawn, despawn, setmoblimit, settotalmoblimit," +
+                                    " usegbbl, addgbbl. delgbbl, addbl, delbl, reloadconf or settimer ",
 							ChatColor.RED);
 					return false;
 
@@ -135,7 +146,8 @@ public class NoSpawn extends JavaPlugin {
 
 				sendNospawnMessage(
 						sender,
-						"No arguments given. Please use allowspawn, denyspawn or despawn",
+						"No arguments given. Please use allowspawn, denyspawn or despawn, setmoblimit, settotalmoblimit" +
+                                " usegbbl, addgbbl. delgbbl, addbl, delbl, reloadconf or settimer ",
 						ChatColor.RED);
 
 			}

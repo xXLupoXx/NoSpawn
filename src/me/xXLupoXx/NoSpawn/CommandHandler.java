@@ -20,24 +20,201 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
-import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CommandHandler {
 
 	Server server;
 	ConfigBuffer cb;
-	FileConfiguration config;
 	boolean hasPermission = false;
 
 	public CommandHandler(Server server, ConfigBuffer cb) {
 		this.server = server;
 		this.cb = cb;
-        this.config = cb.config;
 	}
 
+    public boolean editGlobalBlockBlacklist(CommandSender sender, String[] args){
+
+        hasPermission = checkPerm(sender, "editglobalblockblacklist");
+
+        if (!hasPermission) {
+            return false;
+        }
+
+        if (args.length < 3) {
+
+            if(args[0].contains("add")){
+
+            cb.plugin
+                    .sendNospawnMessage(
+                            sender,
+                            "Invalid number of arguments! Usage is /nospawn addgbbl <world> <blockID> ",
+                            ChatColor.RED);
+
+            } else if (args[0].contains("del")){
+
+                cb.plugin
+                        .sendNospawnMessage(
+                                sender,
+                                "Invalid number of arguments! Usage is /nospawn delgbbl <world> <blockID> ",
+                                ChatColor.RED);
+
+            }
+            return false;
+        }
+
+        if (this.server.getWorld(args[1]) == null) {
+
+            cb.plugin.sendNospawnMessage(sender, "This world does not exist!",
+                    ChatColor.RED);
+            return false;
+        }
+
+        if (!isInt(args[2])) {
+            cb.plugin.sendNospawnMessage(sender, args[2] + " is no block ID!",
+                    ChatColor.RED);
+            return false;
+        }
+        
+        if(args[0].contains("add")){
+            
+            if(addBlacklistElement("worlds." + args[1] + ".properties.GlobalBlockBlacklist",Integer.parseInt(args[2]))){
+
+                cb.plugin.sendNospawnMessage(sender, "Block with ID "+args[2]+" added to Blacklist for world: "+args[1],
+                        ChatColor.GREEN);
+
+            } else {
+
+                cb.plugin.sendNospawnMessage(sender, "Blacklist for world: "+ args[1] + " already contains Block with ID "+args[2],
+                        ChatColor.RED);
+
+            }
+            
+        } else if (args[0].contains("del")) {
+
+            if(deleteBlacklistElement("worlds." + args[1] + ".properties.GlobalBlockBlacklist",Integer.parseInt(args[2]))){
+
+                cb.plugin.sendNospawnMessage(sender, "Block with ID "+args[2]+" removed from Blacklist for world: "+args[1],
+                        ChatColor.GREEN);
+
+            } else {
+
+                cb.plugin.sendNospawnMessage(sender, "Blacklist for world: "+ args[1] + " don't contains Block with ID "+args[2],
+                        ChatColor.RED);
+
+            }
+            
+        }
+        
+
+        return true;
+    }
+
+    public boolean editBlockBlacklist(CommandSender sender, String[] args){
+
+        hasPermission = checkPerm(sender, "editblockblacklist");
+        String mob = Character.toUpperCase(args[2].charAt(0))
+                + args[2].substring(1, args[2].length()).toLowerCase();
+
+        if (args[2].toLowerCase().equals("zombie_pigman")) {
+            mob = "Zombie_Pigman";
+        }
+
+        if (!hasPermission) {
+            return false;
+        }
+
+        if (args.length < 4) {
+
+            if(args[0].contains("add")){
+
+                cb.plugin
+                        .sendNospawnMessage(
+                                sender,
+                                "Invalid number of arguments! Usage is /nospawn addbl <world> <mob> <blockID> ",
+                                ChatColor.RED);
+
+            } else if (args[0].contains("del")){
+
+                cb.plugin
+                        .sendNospawnMessage(
+                                sender,
+                                "Invalid number of arguments! Usage is /nospawn delbl <world> <mob> <blockID> ",
+                                ChatColor.RED);
+
+            }
+            return false;
+        }
+
+        if (!isInt(args[3])) {
+            cb.plugin.sendNospawnMessage(sender, args[3] + " is no block ID!",
+                    ChatColor.RED);
+            return false;
+        }
+
+        if (ConfigBuffer.MobMap.containsKey(mob)) {
+
+            if(args[0].contains("add")){
+
+                if(addBlacklistElement("worlds." + args[1] + ".creature." + mob + ".BlockBlacklist",Integer.parseInt(args[3]))){
+
+                    cb.plugin.sendNospawnMessage(sender, "Block with ID "+args[3]+" added to Blacklist for "+ mob +", world: "+args[1],
+                            ChatColor.GREEN);
+
+                } else {
+
+                    cb.plugin.sendNospawnMessage(sender, "Blacklist for "+ mob +", world: "+ args[1] + " already contains Block with ID "+args[3],
+                            ChatColor.RED);
+
+                }
+
+            } else if (args[0].contains("del")) {
+
+                if(deleteBlacklistElement("worlds." + args[1] + ".creature." + mob + ".BlockBlacklist",Integer.parseInt(args[3]))){
+
+                    cb.plugin.sendNospawnMessage(sender, "Block with ID "+args[3]+" removed from Blacklist for "+ mob +", world: "+args[1],
+                            ChatColor.GREEN);
+
+                } else {
+
+                    cb.plugin.sendNospawnMessage(sender, "Blacklist for "+ mob +", world: "+ args[1] + " don't contains Block with ID "+args[3],
+                            ChatColor.RED);
+
+                }
+
+            }
+
+        } else {
+            cb.plugin.sendNospawnMessage(sender, "Creature " + mob
+                    + " does not exist!", ChatColor.RED);
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean reloadConf(CommandSender sender){
+
+        hasPermission = checkPerm(sender, "reloadconfig");
+
+        if (!hasPermission) {
+            return false;
+        }
+
+        cb.plugin.reloadConfig();
+        cb.config = cb.plugin.getConfig();
+        cb.readConfig();
+
+        cb.plugin.sendNospawnMessage(sender, "Config reload complete",
+                ChatColor.GREEN);
+
+       return true;
+    }
+    
+    
     public boolean setUseGlobalBlockBlacklist(CommandSender sender, String[] args){
 
          hasPermission = checkPerm(sender, "useglobalblockblacklist");
@@ -52,14 +229,14 @@ public class CommandHandler {
 			return false;
 		 }
 
-            if (args.length < 4) {
+         if (args.length < 4) {
 			cb.plugin
 					.sendNospawnMessage(
 							sender,
 							"Invalid number of arguments! Usage is /nospawn usegbbl <world> <monster> <true/false>",
 							ChatColor.RED);
 			return false;
-		}
+		 }
 
         if (this.server.getWorld(args[1]) == null) {
 
@@ -71,7 +248,7 @@ public class CommandHandler {
         if (ConfigBuffer.MobMap.containsKey(mob)) {
 
         if(args[3].equals("true")){
-            config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", true);
+            cb.config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", true);
 
             		cb.plugin
 					.sendNospawnMessage(
@@ -83,7 +260,7 @@ public class CommandHandler {
             cb.readConfig();
         }
         else if(args[3].equals("false")){
-            config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", false);
+            cb.config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", false);
 
                     cb.plugin
 					.sendNospawnMessage(
@@ -222,7 +399,7 @@ public class CommandHandler {
 			return false;
 		}
 
-		config.set("properties.RefreshTimer", Integer.parseInt(args[1]));
+		cb.config.set("properties.RefreshTimer", Integer.parseInt(args[1]));
 		cb.plugin.sendNospawnMessage(sender, "Timer set to " + args[1]
 				+ " milliseconds!", ChatColor.GREEN);
 		saveConfig();
@@ -602,15 +779,15 @@ public class CommandHandler {
 		if (ConfigBuffer.MobMap.containsKey(mob)) {
 
 			if (operation.equals("allow")) {
-				config.set("worlds." + w + ".creature." + mob + ".spawn", true);
+				cb.config.set("worlds." + w + ".creature." + mob + ".spawn", true);
 				cb.plugin.sendNospawnMessage(sender,
 						mob + "s are now enabled!", ChatColor.GREEN);
 			} else if (operation.equals("deny")) {
-				config.set("worlds." + w + ".creature." + mob + ".spawn", false);
+				cb.config.set("worlds." + w + ".creature." + mob + ".spawn", false);
 				cb.plugin.sendNospawnMessage(sender, mob
 						+ "s are now disabled!", ChatColor.GREEN);
 			} else if (operation.equals("moblimit")) {
-				config.set("worlds." + w + ".creature." + mob + ".Limit", Integer.parseInt(args[3]));
+				cb.config.set("worlds." + w + ".creature." + mob + ".Limit", Integer.parseInt(args[3]));
 				cb.plugin.sendNospawnMessage(sender, mob
 						+ "s are now limited to " + args[3] + " !",
 						ChatColor.GREEN);
@@ -641,7 +818,7 @@ public class CommandHandler {
 			return false;
 		}
 		if (operation.equals("totalmoblimit")) {
-			config.set("worlds." + w + ".properties.TotalMobLimit",
+			cb.config.set("worlds." + w + ".properties.TotalMobLimit",
 					Integer.parseInt(args[2]));
 			cb.plugin.sendNospawnMessage(sender, "Mobs are now limited to "
 					+ args[2] + " !", ChatColor.GREEN);
@@ -694,7 +871,117 @@ public class CommandHandler {
 		}
 	}
 
+    private boolean addBlacklistElement(String path, int blockId)
+    {
+        
+        List<Integer> blacklistList = loadBlacklist(path);
 
+        if(blacklistList == null){
+
+            blacklistList = new ArrayList<Integer>();
+
+        }
+        
+        if(!blacklistList.contains(blockId)){
+            
+            blacklistList.add(blockId);
+            
+            saveBlacklist(path,blacklistList);
+            
+        } else {
+            
+            return false;
+            
+        }
+        
+        return true;
+    }
+    
+    private  boolean deleteBlacklistElement(String path, int blockId)
+    {
+        List<Integer> blacklistList = loadBlacklist(path);
+
+        int idx;
+
+        if(blacklistList == null){
+
+            blacklistList = new ArrayList<Integer>();
+
+        }
+
+        if(blacklistList.contains(blockId)){
+
+            idx = blacklistList.indexOf(blockId);
+            blacklistList.remove(idx);
+
+            saveBlacklist(path,blacklistList);
+
+        } else {
+
+            return false;
+
+        }
+        
+        return true;
+        
+    }
+    
+    private void saveBlacklist(String path, List<Integer> blacklistList)
+    {
+
+        if(blacklistList != null){
+            Iterator<Integer> blockedIds = blacklistList.iterator();
+            String blacklistString = "";
+            Integer IntBuffer;
+            while(blockedIds.hasNext()){
+                
+                IntBuffer = blockedIds.next();
+
+                if(blockedIds.hasNext()){
+
+                    blacklistString += IntBuffer.toString() + ";";
+
+                } else {
+
+                    blacklistString += IntBuffer.toString();
+
+                }
+            }
+
+            cb.config.set(path, blacklistString);
+
+        } else {
+
+        cb.config.set(path,"");
+
+        }
+        saveConfig();
+        cb.readConfig();
+        
+    }
+    
+    private List<Integer> loadBlacklist(String path){
+        
+        List<Integer> blacklistList = new ArrayList<Integer>();
+        String blacklistString = cb.config.getString(path,"");
+        String[] blacklistArray;
+        
+        if(blacklistString.equals("")){
+            return null;
+        }
+        
+        blacklistArray = blacklistString.split(";");
+        
+        for(String s:blacklistArray){
+            
+            blacklistList.add(Integer.parseInt(s));
+        }
+
+        return blacklistList;
+        
+    }
+    
+    
     private void saveConfig()
     {
        // try
