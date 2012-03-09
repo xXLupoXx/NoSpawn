@@ -42,12 +42,16 @@ public class Spawns {
 
 	public boolean isSpawnAllowed(EntityType type, Block block) {
 		if ((getCurrentTotalMobsCount() >= TotalMobLimit) && TotalMobLimit != 0) {
-			// System.out.println(CurrentTotalMobs + " "+ TotalMobLimit);
+
+            NoSpawnDebugLogger.debugmsg("No mobs spawnd because the total Mobcount is "+getCurrentTotalMobsCount() + "but only "+TotalMobLimit+" mobs are allowed");
+
 			return false;
 		}
 
-		if ((CurrentMobCount.get(type) >= MobLimit.get(type))
-				&& MobLimit.get(type) != 0) {
+		if ((CurrentMobCount.get(type) >= MobLimit.get(type)) && MobLimit.get(type) != 0) {
+
+            NoSpawnDebugLogger.debugmsg("No mobs spawnd because the Moblimmit for "+type.getName()+" is "+MobLimit.get(type)+ " and there are "+CurrentMobCount.get(type)+" mobs of this type");
+
 			return false;
 		}
 
@@ -56,12 +60,14 @@ public class Spawns {
             if(UseGlobalBlockBlacklist.get(type) != null && GlobalBlockBlacklist != null){
 
                 if(UseGlobalBlockBlacklist.get(type) && GlobalBlockBlacklist.contains(block.getTypeId())){
+                    NoSpawnDebugLogger.debugmsg("No mobs spawnd because "+type.getName()+"s Block is on the GBBL");
                     return false;
                 }
             }
             if (BlockBlacklist.get(type) != null) {
 
 				if (BlockBlacklist.get(type).contains(block.getTypeId())) {
+                    NoSpawnDebugLogger.debugmsg("No mobs spawnd because "+type.getName()+"s Block is on the BBL");
 					return false;
 				}
 
@@ -69,6 +75,8 @@ public class Spawns {
 
 			return true;
 		} else {
+
+            NoSpawnDebugLogger.debugmsg("No mobs spawnd because "+type.getName()+" aren't allowed");
 			return false;
 		}
 	}

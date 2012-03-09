@@ -26,7 +26,6 @@ public class MobCounter {
 	Server server;
 	ConfigBuffer cb;
 
-
 	public MobCounter(final Server server, final ConfigBuffer cb) {
 
 		this.server = server;
@@ -46,10 +45,11 @@ public class MobCounter {
                     {
                         cb.worldSpawns.get(w).CurrentMobCount.put(e,0);
                     }
-
 					for (LivingEntity e : w.getLivingEntities()) {
 
-                        cb.worldSpawns.get(w).CurrentMobCount.put(e.getType(),cb.worldSpawns.get(w).CurrentMobCount.get(e.getType())+1);
+                        if(!(e instanceof Player)) {
+                            cb.worldSpawns.get(w).CurrentMobCount.put(e.getType(),(cb.worldSpawns.get(w).CurrentMobCount.get(e.getType())+1));
+                        }
 				    }
                 }
 			}

@@ -157,7 +157,7 @@ public class CommandHandler {
             return false;
         }
 
-        if (ConfigBuffer.MobMap.containsKey(mob)) {
+        if (MobExists(sender,mob)) {
 
             if(args[0].contains("add")){
 
@@ -190,8 +190,6 @@ public class CommandHandler {
             }
 
         } else {
-            cb.plugin.sendNospawnMessage(sender, "Creature " + mob
-                    + " does not exist!", ChatColor.RED);
             return false;
         }
 
@@ -247,7 +245,7 @@ public class CommandHandler {
 			return false;
 		}
 
-        if (ConfigBuffer.MobMap.containsKey(mob)) {
+        if (MobExists(sender,mob)) {
 
         if(args[3].equals("true")){
             cb.config.set("worlds." + args[1] + ".creature." + mob + ".UseGlobalBlockBlacklist", true);
@@ -277,8 +275,6 @@ public class CommandHandler {
             return true;
 
         } else {
-			cb.plugin.sendNospawnMessage(sender, "Creature " + mob
-					+ " does not exist!", ChatColor.RED);
 			return false;
 		}
 
@@ -446,19 +442,24 @@ public class CommandHandler {
 			le = server.getWorld(w).getEntities();
 		}
         
-        if(!ConfigBuffer.MobMap.containsKey(mob))
+        if(mob.equals("All"))
         {
-            String mobtypes= "";
-            for(String s: ConfigBuffer.MobMap.keySet())
+            for(Entity e:le)
             {
-                mobtypes += s +"| ";
+                if(!(e instanceof Player))
+                {
+                    e.remove();
+                    killcount++;
+                }
             }
-            mobtypes = mobtypes.substring(mobtypes.length()-2);
-            
-            cb.plugin.sendNospawnMessage(sender, "No valid Mob. Valid Mobs are: "+mobtypes,
-                    ChatColor.RED);
-            return false;
+
+            cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+                    + " Mobs from " + w, ChatColor.GREEN);
+            return true;
         }
+        
+        if(!MobExists(sender,mob))
+            return false;
         
         for(Entity e:le)
         {
@@ -469,6 +470,11 @@ public class CommandHandler {
             }
 
         }
+
+
+        server.getScheduler().cancelTasks(cb.plugin);
+        cb.plugin.mc.runSchedueler();
+
         cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
                 + " "+mob+"s from " + w, ChatColor.GREEN);
         return true;
@@ -490,7 +496,7 @@ public class CommandHandler {
 			return false;
 		}
 
-		if (ConfigBuffer.MobMap.containsKey(mob)) {
+		if (MobExists(sender,args[2])) {
 
 			if (operation.equals("allow")) {
 				cb.config.set("worlds." + w + ".creature." + mob + ".spawn", true);
@@ -514,8 +520,6 @@ public class CommandHandler {
 			return true;
 
 		} else {
-			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]
-					+ " does not exist!", ChatColor.RED);
 			return false;
 		}
 	}
@@ -697,51 +701,37 @@ public class CommandHandler {
     
     private String ConvertMobname(String s)
     {
-        String ret = "";
+        String ret;
         
         s = s.toLowerCase();
         if(s.contains("_"))
         {
-            String[] s_arr = s.split("_"); 
-            char[] ch_arr1, ch_arr2;
+            String[] s_arr = s.split("_");
+            ret = Character.toUpperCase(s_arr[0].charAt(0))+ s_arr[0].substring(1, s_arr[0].length()).toLowerCase()+"_"+Character.toUpperCase(s_arr[1].charAt(0))+ s_arr[1].substring(1, s_arr[1].length()).toLowerCase();
 
-            ch_arr1 = s_arr[0].toCharArray();
-            ch_arr2 = s_arr[1].toCharArray();
-
-            if((int)ch_arr1[0]<97)
-            {
-                ch_arr1[0] = (char)((int)ch_arr1[0]+32);
-            }
-            if((int)ch_arr2[0]<97)
-            {
-                ch_arr2[0] = (char)((int)ch_arr2[0]+32);
-            }
-            
-            for(char c:ch_arr1)
-            {
-                ret +=c; 
-            }
-            ret +="_";
-            for(char c:ch_arr2)
-            {
-                ret +=c;
-            } 
         }
         else
         {
-            char[] ch_arr1 = s.toCharArray();
-
-            if((int)ch_arr1[0]<97)
-            {
-                ch_arr1[0] = (char)((int)ch_arr1[0]+32);
-            }
-
-            for(char c:ch_arr1)
-            {
-                ret +=c;
-            }
+            ret = Character.toUpperCase(s.charAt(0))+ s.substring(1, s.length()).toLowerCase();
         }
         return ret;
+    }
+    
+    private boolean MobExists(CommandSender sender,String mob)
+    {
+        if(!ConfigBuffer.MobMap.containsKey(mob))
+        {
+            String mobtypes= "";
+            for(String s: ConfigBuffer.MobMap.keySet())
+            {
+                mobtypes += s +" | ";
+            }
+
+            cb.plugin.sendNospawnMessage(sender, mob+" isn't valid Mob. Valid Mobs are: "+mobtypes,
+                    ChatColor.RED);
+            return false;
+        }
+        return true;
     }
 
 }

@@ -28,7 +28,7 @@ public class ConfigBuffer {
 	public Map<org.bukkit.World, Spawns> worldSpawns = new HashMap<org.bukkit.World, Spawns>();
 	public static Map<String, EntityType> MobMap = new HashMap<String, EntityType>();
     public static boolean BukkitPerm = false;
-
+    public static boolean Debugmode = false;
 	static
 	{
 		MobMap.put("Sheep", EntityType.SHEEP);
