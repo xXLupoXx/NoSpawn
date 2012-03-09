@@ -14,7 +14,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn;
+package me.xXLupoXx.NoSpawn.Util;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;

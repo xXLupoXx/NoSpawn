@@ -14,8 +14,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn;
+package me.xXLupoXx.NoSpawn.Listeners;
 
+import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

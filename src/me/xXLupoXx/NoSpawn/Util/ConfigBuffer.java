@@ -14,20 +14,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn;
+package me.xXLupoXx.NoSpawn.Util;
+
+import me.xXLupoXx.NoSpawn.NoSpawn;
 
 import org.bukkit.World;
-
 import org.bukkit.configuration.file.FileConfiguration;
-
 import org.bukkit.entity.EntityType;
-import ru.tehkode.permissions.PermissionManager;
 
 import java.util.*;
 
 public class ConfigBuffer {
 	public Map<org.bukkit.World, Spawns> worldSpawns = new HashMap<org.bukkit.World, Spawns>();
 	public static Map<String, EntityType> MobMap = new HashMap<String, EntityType>();
+    public static boolean BukkitPerm = false;
+
 	static
 	{
 		MobMap.put("Sheep", EntityType.SHEEP);
@@ -54,7 +55,7 @@ public class ConfigBuffer {
         MobMap.put("Magma_Cube", EntityType.MAGMA_CUBE);
 
 	}
-	public PermissionManager Permissions;
+
 	public NoSpawn plugin;
 	public int CountTimer;
     public FileConfiguration config;

@@ -16,6 +16,13 @@
 
 package me.xXLupoXx.NoSpawn;
 
+import me.xXLupoXx.NoSpawn.Commands.CommandHandler;
+import me.xXLupoXx.NoSpawn.Listeners.NoSpawnEntityListener;
+import me.xXLupoXx.NoSpawn.Listeners.NoSpawnWorldListener;
+import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import me.xXLupoXx.NoSpawn.Util.MobCounter;
+import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
+import me.xXLupoXx.NoSpawn.Util.Spawns;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -24,18 +31,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-//import com.nijikokun.bukkit.Permissions.Permissions;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class NoSpawn extends JavaPlugin {
 	NoSpawnEntityListener el;
 	NoSpawnWorldListener wl;
 	ConfigBuffer cb;
-	MobCounter mc;
+	public MobCounter mc;
+
+    private static NoSpawn plug;
 
 	CommandHandler cmh;
 
+    public static NoSpawn getPlugin()
+    {
+        return plug;
+    }
+
 	public void onEnable() {
+        plug = this;
+
 		this.cb = new ConfigBuffer(this);
 
 		for (World w : this.getServer().getWorlds()) {
@@ -54,18 +68,13 @@ public class NoSpawn extends JavaPlugin {
 		this.el = new NoSpawnEntityListener(this.cb);
 		mc = new MobCounter(this.getServer(), cb);
 		wl = new NoSpawnWorldListener(cb);
+
+        NoSpawnPermissions.setup();
+
 		this.cmh = new CommandHandler(this.getServer(), this.cb);
 		PluginDescriptionFile pdfFile = getDescription();
 
-		if (setupPermissions()) {
 
-			System.out.println("[NoSpawn] Permissions found, using Permissions!");
-
-		} else {
-
-			System.out.println("[NoSpawn] No Permissions found, Op's can use commands!");
-
-		}
 
 		System.out.println(pdfFile.getName() + " version "
 				+ pdfFile.getVersion() + " is enabled!");
@@ -156,19 +165,6 @@ public class NoSpawn extends JavaPlugin {
 		return false;
 	}
 
-	private boolean setupPermissions() {
-
-		if (cb.Permissions == null) {
-			if(getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-				cb.Permissions = PermissionsEx.getPermissionManager();
-				return true;
-
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
 
 	public void sendNospawnMessage(CommandSender sender, String Message,
 			ChatColor Color) {

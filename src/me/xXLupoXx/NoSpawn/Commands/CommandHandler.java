@@ -14,8 +14,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn;
+package me.xXLupoXx.NoSpawn.Commands;
 
+import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -837,22 +839,11 @@ public class CommandHandler {
 
 		if (sender instanceof Player) {
 			player = (Player) sender;
-
-			if (cb.Permissions == null) {
-				if (!player.isOp()) {
+				if (!(NoSpawnPermissions.has(player, "nospawn." + perm))) {
 					player.sendMessage(ChatColor.RED
 							+ "You don't have the permissions to do that!");
 					return false;
 				}
-			} else {
-
-				if (!(cb.Permissions.has(player, "nospawn." + perm))) {
-					player.sendMessage(ChatColor.RED
-							+ "You don't have the permissions to do that!");
-					return false;
-				}
-			}
-
 			return true;
 
 		} else {
