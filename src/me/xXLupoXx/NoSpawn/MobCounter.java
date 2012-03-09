@@ -153,50 +153,28 @@ public class MobCounter {
 
 					}
 
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SHEEP, tmpCountSheep);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.COW, tmpCountCow);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.CHICKEN, tmpCountChicken);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.WOLF, tmpCountWolf);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.ZOMBIE, tmpCountZombie);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.PIG_ZOMBIE, tmpCountPigZombie);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.PIG, tmpCountPig);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.GHAST, tmpCountGhast);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SLIME, tmpCountSlime);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.GIANT, tmpCountGiant);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.CREEPER, tmpCountCreeper);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SKELETON, tmpCountSkeleton);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SQUID, tmpCountSquid);
-					cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SPIDER, tmpCountSpider);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.VILLAGER, tmpCountVillager);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.CAVE_SPIDER, tmpCountCaveSpider);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.MUSHROOM_COW, tmpCountMooshroom);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.ENDER_DRAGON, tmpCountEnderdragon);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.ENDERMAN, tmpCountEnderman);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.SILVERFISH, tmpCountSilverfish);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-							CreatureType.BLAZE, tmpCountBlaze);
-                    cb.worldSpawns.get(w).CurrentMobCount.put(
-                           CreatureType.MAGMA_CUBE,tmpCoutMagmaCube);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SHEEP, tmpCountSheep);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.COW, tmpCountCow);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.CHICKEN, tmpCountChicken);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.WOLF, tmpCountWolf);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.ZOMBIE, tmpCountZombie);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.PIG_ZOMBIE, tmpCountPigZombie);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.PIG, tmpCountPig);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.GHAST, tmpCountGhast);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SLIME, tmpCountSlime);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.GIANT, tmpCountGiant);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.CREEPER, tmpCountCreeper);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SKELETON, tmpCountSkeleton);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SQUID, tmpCountSquid);
+					cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SPIDER, tmpCountSpider);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.VILLAGER, tmpCountVillager);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.CAVE_SPIDER, tmpCountCaveSpider);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.MUSHROOM_COW, tmpCountMooshroom);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.ENDER_DRAGON, tmpCountEnderdragon);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.ENDERMAN, tmpCountEnderman);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.SILVERFISH, tmpCountSilverfish);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.BLAZE, tmpCountBlaze);
+                    cb.worldSpawns.get(w).CurrentMobCount.put(EntityType.MAGMA_CUBE,tmpCoutMagmaCube);
 
 				}
 			}

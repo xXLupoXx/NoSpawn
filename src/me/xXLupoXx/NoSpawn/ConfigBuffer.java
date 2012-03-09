@@ -17,40 +17,41 @@
 package me.xXLupoXx.NoSpawn;
 
 import org.bukkit.World;
-import org.bukkit.entity.CreatureType;
+
 import org.bukkit.configuration.file.FileConfiguration;
 
+import org.bukkit.entity.EntityType;
 import ru.tehkode.permissions.PermissionManager;
 
 import java.util.*;
 
 public class ConfigBuffer {
 	public Map<org.bukkit.World, Spawns> worldSpawns = new HashMap<org.bukkit.World, Spawns>();
-	public static Map<String, CreatureType> MobMap = new HashMap<String, CreatureType>();
+	public static Map<String, EntityType> MobMap = new HashMap<String, EntityType>();
 	static
 	{
-		MobMap.put("Sheep", CreatureType.SHEEP);
-		MobMap.put("Pig", CreatureType.PIG);
-		MobMap.put("Cow", CreatureType.COW);
-		MobMap.put("Chicken", CreatureType.CHICKEN);
-		MobMap.put("Squid", CreatureType.SQUID);
-		MobMap.put("Zombie_Pigman", CreatureType.PIG_ZOMBIE);
-		MobMap.put("Wolf", CreatureType.WOLF);
-		MobMap.put("Zombie", CreatureType.ZOMBIE);
-		MobMap.put("Skeleton", CreatureType.SKELETON);
-		MobMap.put("Spider", CreatureType.SPIDER);
-		MobMap.put("Creeper", CreatureType.CREEPER);
-		MobMap.put("Slime", CreatureType.SLIME);
-		MobMap.put("Ghast", CreatureType.GHAST);
-		MobMap.put("Giant", CreatureType.GIANT);
-        MobMap.put("Enderman", CreatureType.ENDERMAN);
-        MobMap.put("Mooshroom", CreatureType.MUSHROOM_COW);
-        MobMap.put("Villager", CreatureType.VILLAGER);
-        MobMap.put("Blaze", CreatureType.BLAZE);
-        MobMap.put("Cave_Spider", CreatureType.CAVE_SPIDER);
-        MobMap.put("Silverfish", CreatureType.SILVERFISH);
-        MobMap.put("Enderdragon", CreatureType.ENDER_DRAGON);
-        MobMap.put("Magma_Cube", CreatureType.MAGMA_CUBE);
+		MobMap.put("Sheep", EntityType.SHEEP);
+		MobMap.put("Pig", EntityType.PIG);
+		MobMap.put("Cow", EntityType.COW);
+		MobMap.put("Chicken", EntityType.CHICKEN);
+		MobMap.put("Squid", EntityType.SQUID);
+		MobMap.put("Zombie_Pigman", EntityType.PIG_ZOMBIE);
+		MobMap.put("Wolf", EntityType.WOLF);
+		MobMap.put("Zombie", EntityType.ZOMBIE);
+		MobMap.put("Skeleton", EntityType.SKELETON);
+		MobMap.put("Spider", EntityType.SPIDER);
+		MobMap.put("Creeper", EntityType.CREEPER);
+		MobMap.put("Slime", EntityType.SLIME);
+		MobMap.put("Ghast", EntityType.GHAST);
+		MobMap.put("Giant", EntityType.GIANT);
+        MobMap.put("Enderman", EntityType.ENDERMAN);
+        MobMap.put("Mooshroom", EntityType.MUSHROOM_COW);
+        MobMap.put("Villager", EntityType.VILLAGER);
+        MobMap.put("Blaze", EntityType.BLAZE);
+        MobMap.put("Cave_Spider", EntityType.CAVE_SPIDER);
+        MobMap.put("Silverfish", EntityType.SILVERFISH);
+        MobMap.put("Enderdragon", EntityType.ENDER_DRAGON);
+        MobMap.put("Magma_Cube", EntityType.MAGMA_CUBE);
 
 	}
 	public PermissionManager Permissions;

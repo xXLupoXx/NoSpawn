@@ -36,25 +36,31 @@ public class NoSpawnEntityListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-
 		if (cb.config == null) {
 			return;
 		}
 
+        if(!ConfigBuffer.MobMap.containsValue(event.getEntityType()) )
+        {
+            return;
+        }
+
+
 		if (cb.plugin.isEnabled()) {
 			if (event.getSpawnReason() != SpawnReason.CUSTOM) {
 				if (cb.config.get("worlds") != null) {
-					if (cb.worldSpawns
-							.containsKey(event.getEntity().getWorld())) {
-						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount
-								.get(event.getCreatureType());
+					if (cb.worldSpawns.containsKey(event.getEntity().getWorld())) {
+
+						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount.get(event.getEntityType());
 						tmp++;
-						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getCreatureType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
+
+						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getEntityType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
+
 							event.setCancelled(true);
 							tmp--;
 						}
-						cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount
-								.put(event.getCreatureType(), tmp);
+
+						cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount.put(event.getEntityType(), tmp);
 
 					} else {
 						event.setCancelled(true);
