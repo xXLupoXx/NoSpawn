@@ -84,6 +84,7 @@ public class ConfigBuffer {
             config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
 		}
         config.set("properties.RefreshTimer", 60000);
+        config.set("properties.UseBukkitPermissions",false);
         saveConfig();
 	}
 
@@ -115,76 +116,21 @@ public class ConfigBuffer {
 			if (config.get("worlds") != null) {
 				while (Mobs.hasNext()) {
 					Buffer = Mobs.next();
-					this.worldSpawns.get(w).SpawnAllowed.put(
-							MobMap.get(Buffer),
-							config.getBoolean("worlds." + w.getName()
-									+ ".creature." + Buffer + ".spawn", true));
-					this.worldSpawns.get(w).BlockBlacklist.put(
-							MobMap.get(Buffer),
-							getBlacklist(config.getString(
-									"worlds." + w.getName() + ".creature."
-											+ Buffer + ".BlockBlacklist", "")));
-
-                    this.worldSpawns.get(w).UseGlobalBlockBlacklist.put(
-                            MobMap.get(Buffer),
-                            config.getBoolean("worlds." + w.getName() + ".creature."
-                                    + Buffer + ".UseGlobalBlockBlacklist", true));
-
-					if (config.get("worlds." + w.getName()
-							+ ".creature." + Buffer + ".Limit") != null) {
-
-						this.worldSpawns.get(w).MobLimit.put(
-								MobMap.get(Buffer),
-								config.getInt("worlds." + w.getName()
-										+ ".creature." + Buffer + ".Limit", 0));
-
-					} else {
-
-						config.set("worlds." + w.getName()
-								+ ".creature." + Buffer + ".Limit", 0);
-						saveConfig();
-						this.worldSpawns.get(w).MobLimit.put(
-								MobMap.get(Buffer),
-								config.getInt("worlds." + w.getName()
-										+ ".creature." + Buffer + ".Limit", 0));
-					}
-
+					this.worldSpawns.get(w).SpawnAllowed.put(MobMap.get(Buffer), config.getBoolean("worlds." + w.getName()+ ".creature." + Buffer + ".spawn", true));
+					this.worldSpawns.get(w).BlockBlacklist.put(	MobMap.get(Buffer), getBlacklist(config.getString("worlds." + w.getName() + ".creature."+ Buffer + ".BlockBlacklist", "")));
+                    this.worldSpawns.get(w).UseGlobalBlockBlacklist.put(MobMap.get(Buffer), config.getBoolean("worlds." + w.getName() + ".creature."+ Buffer + ".UseGlobalBlockBlacklist", true));
+					this.worldSpawns.get(w).MobLimit.put(MobMap.get(Buffer),config.getInt("worlds." + w.getName()+ ".creature." + Buffer + ".Limit", 0));
 				}
 
-                this.worldSpawns.get(w).GlobalBlockBlacklist = getBlacklist(
-                        config.getString("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", ""));
+                this.worldSpawns.get(w).GlobalBlockBlacklist = getBlacklist(config.getString("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", ""));
 
-				if (config.get("worlds." + w.getName()
-						+ ".properties.TotalMobLimit") != null) {
-
-					this.worldSpawns.get(w).TotalMobLimit = config.getInt(
-							"worlds." + w.getName()
-									+ ".properties.TotalMobLimit", 0);
-
-				} else {
-
-					config.set("worlds." + w.getName()
-							+ ".properties.TotalMobLimit", 0);
-					saveConfig();
-					this.worldSpawns.get(w).TotalMobLimit = config.getInt(
-							"worlds." + w.getName()
-									+ ".properties.TotalMobLimit", 0);
-				}
-				if (config.get("properties.RefreshTimer") != null) {
-
-					this.CountTimer = config.getInt("properties.RefreshTimer",
-							20000);
-
-				} else {
-
-					config.set("properties.RefreshTimer", 60000);
-					saveConfig();
-					this.CountTimer = config.getInt(
-							"properties.RefreshTimer", 60000);
-				}
+				this.worldSpawns.get(w).TotalMobLimit = config.getInt("worlds." + w.getName()+ ".properties.TotalMobLimit", 0);
 
 			}
 		}
+
+        this.CountTimer = config.getInt("properties.RefreshTimer",20000);
+        BukkitPerm = config.getBoolean("properties.UseBukkitPermissions",false);
 
 	}
 
@@ -254,6 +200,10 @@ public class ConfigBuffer {
             if(config.get("properties.RefreshTimer") == null){
                 config.set("properties.RefreshTimer", 60000);
             }
+            if(config.get("properties.UseBukkitPermissions")==null){
+                config.set("properties.UseBukkitPermissions",false);
+            }
+
             saveConfig();
 
     }
