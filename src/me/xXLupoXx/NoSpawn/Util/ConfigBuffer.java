@@ -53,6 +53,9 @@ public class ConfigBuffer {
         MobMap.put("Silverfish", EntityType.SILVERFISH);
         MobMap.put("Enderdragon", EntityType.ENDER_DRAGON);
         MobMap.put("Magma_Cube", EntityType.MAGMA_CUBE);
+        MobMap.put("Ocelot",EntityType.OCELOT);
+        MobMap.put("Snowman",EntityType.SNOWMAN);
+        MobMap.put("Iron_Golem",EntityType.IRON_GOLEM);
 
 	}
 

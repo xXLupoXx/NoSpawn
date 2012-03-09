@@ -433,8 +433,9 @@ public class CommandHandler {
 			return false;
 		}
 
-		String mob = args[2].toLowerCase();
+		String mob = ConvertMobname(args[2]);
 		String w = args[1];
+
 
 		if (this.server.getWorld(args[1]) == null) {
 
@@ -444,322 +445,33 @@ public class CommandHandler {
 		} else {
 			le = server.getWorld(w).getEntities();
 		}
-
-		if (mob.equals("pig")) {
-
-            for (Entity aLe : le)
+        
+        if(!ConfigBuffer.MobMap.containsKey(mob))
+        {
+            String mobtypes= "";
+            for(String s: ConfigBuffer.MobMap.keySet())
             {
-                if (aLe instanceof Pig)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
+                mobtypes += s +"| ";
             }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Pigs from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("sheep")) {
-
-            for (Entity aLe : le)
+            mobtypes = mobtypes.substring(mobtypes.length()-2);
+            
+            cb.plugin.sendNospawnMessage(sender, "No valid Mob. Valid Mobs are: "+mobtypes,
+                    ChatColor.RED);
+            return false;
+        }
+        
+        for(Entity e:le)
+        {
+            if(e.getType() == ConfigBuffer.MobMap.get(mob))
             {
-                if (aLe instanceof Sheep)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
+                e.remove();
+                killcount++;
             }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Sheeps from " + w, ChatColor.GREEN);
-			return true;
 
-		} else if (mob.equals("cow")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Cow)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Cows from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("chicken")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Chicken)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Chickens from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("zombie_pigman")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof PigZombie)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Zombie Pigmen from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("squid")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Squid)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Squids from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("wolf")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Wolf)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Wolfs from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("zombie")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Zombie)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Zombies from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("skeleton")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Skeleton)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Skeletons from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("spider")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Spider)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Spiders from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("creeper")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Creeper)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Creeper from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("slime")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Slime)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Slimes from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("ghast")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Ghast)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Ghasts from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("giant")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Giant)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Giants from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("enderman")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Enderman)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Enderman from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("enderdragon")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof EnderDragon)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Enderdragons from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("blaze")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Blaze)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Blaze from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("villager")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Villager)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Villagers from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("silverfish")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof Silverfish)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Silverfish from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("cave_spider")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof CaveSpider)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Cave Spiders from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("mooshroom")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof MushroomCow)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Mooshrooms from " + w, ChatColor.GREEN);
-			return true;
-
-		} else if (mob.equals("magma_cube")) {
-
-            for (Entity aLe : le)
-            {
-                if (aLe instanceof MagmaCube)
-                {
-                    aLe.remove();
-                    killcount++;
-                }
-            }
-			cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
-					+ " Magma Cubes from " + w, ChatColor.GREEN);
-			return true;
-
-		} else {
-
-			cb.plugin.sendNospawnMessage(sender, "Creature " + args[2]
-					+ " does not exist!", ChatColor.RED);
-			return false;
-		}
-
+        }
+        cb.plugin.sendNospawnMessage(sender, "Removed " + killcount
+                + " "+mob+"s from " + w, ChatColor.GREEN);
+        return true;
 	}
 
 	private boolean setConf(CommandSender sender, String[] args,
@@ -981,6 +693,55 @@ public class CommandHandler {
       //  }
         //catch(IOException io){
        // }
+    }
+    
+    private String ConvertMobname(String s)
+    {
+        String ret = "";
+        
+        s = s.toLowerCase();
+        if(s.contains("_"))
+        {
+            String[] s_arr = s.split("_"); 
+            char[] ch_arr1, ch_arr2;
+
+            ch_arr1 = s_arr[0].toCharArray();
+            ch_arr2 = s_arr[1].toCharArray();
+
+            if((int)ch_arr1[0]<97)
+            {
+                ch_arr1[0] = (char)((int)ch_arr1[0]+32);
+            }
+            if((int)ch_arr2[0]<97)
+            {
+                ch_arr2[0] = (char)((int)ch_arr2[0]+32);
+            }
+            
+            for(char c:ch_arr1)
+            {
+                ret +=c; 
+            }
+            ret +="_";
+            for(char c:ch_arr2)
+            {
+                ret +=c;
+            } 
+        }
+        else
+        {
+            char[] ch_arr1 = s.toCharArray();
+
+            if((int)ch_arr1[0]<97)
+            {
+                ch_arr1[0] = (char)((int)ch_arr1[0]+32);
+            }
+
+            for(char c:ch_arr1)
+            {
+                ret +=c;
+            }
+        }
+        return ret;
     }
 
 }
