@@ -1,10 +1,9 @@
 name: NoSpawn
 main: me.xXLupoXx.NoSpawn.NoSpawn
 author: xXLupoXx
-version: 1.8
+version: 1.8.1
 website: http://dev.bukkit.org/server-mods/nospawn/
 softdepend: [Vault]
 commands:
   nospawn:
     description: NoSpawn commands
-    usage: 'Syntax: /<command> <allowspawn, denyspawn, despawn, setmoblimit, settotalmoblimit, usegbbl or settimer> <value>'

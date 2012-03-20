@@ -19,10 +19,7 @@ package me.xXLupoXx.NoSpawn;
 import me.xXLupoXx.NoSpawn.Commands.CommandHandler;
 import me.xXLupoXx.NoSpawn.Listeners.NoSpawnEntityListener;
 import me.xXLupoXx.NoSpawn.Listeners.NoSpawnWorldListener;
-import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
-import me.xXLupoXx.NoSpawn.Util.MobCounter;
-import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
-import me.xXLupoXx.NoSpawn.Util.Spawns;
+import me.xXLupoXx.NoSpawn.Util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -30,6 +27,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 
 public class NoSpawn extends JavaPlugin {
@@ -81,6 +80,20 @@ public class NoSpawn extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(this.el, this);
 		getServer().getPluginManager().registerEvents(this.wl, this);
+
+        if (cb.sendMetrics)
+        {
+            try
+            {
+                Metrics metrics = new Metrics();
+
+                metrics.beginMeasuringPlugin(getPlugin());
+            }
+            catch (IOException e)
+            {
+                NoSpawnDebugLogger.debugmsg(e.getMessage());
+            }
+        }
 
 	}
 

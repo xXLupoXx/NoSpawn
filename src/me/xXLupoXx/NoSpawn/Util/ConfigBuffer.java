@@ -29,6 +29,7 @@ public class ConfigBuffer {
 	public static Map<String, EntityType> MobMap = new HashMap<String, EntityType>();
     public static boolean BukkitPerm = false;
     public static boolean Debugmode = false;
+    public static boolean sendMetrics = true;
 	static
 	{
 		MobMap.put("Sheep", EntityType.SHEEP);
@@ -88,6 +89,7 @@ public class ConfigBuffer {
 		}
         config.set("properties.RefreshTimer", 60000);
         config.set("properties.UseBukkitPermissions",false);
+        config.set("properties.sendMetrics",true);
         saveConfig();
 	}
 
@@ -134,6 +136,7 @@ public class ConfigBuffer {
 
         this.CountTimer = config.getInt("properties.RefreshTimer",20000);
         BukkitPerm = config.getBoolean("properties.UseBukkitPermissions",false);
+        sendMetrics = config.getBoolean("properties.sendMetrics",true);
 
 	}
 
@@ -205,6 +208,9 @@ public class ConfigBuffer {
             }
             if(config.get("properties.UseBukkitPermissions")==null){
                 config.set("properties.UseBukkitPermissions",false);
+            }
+            if(config.get("properties.sendMetrics")== null){
+                config.set("properties.sendMetrics",true);
             }
 
             saveConfig();
