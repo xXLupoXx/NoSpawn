@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CommandHandler {
@@ -118,12 +117,7 @@ public class CommandHandler {
     public boolean editBlockBlacklist(CommandSender sender, String[] args){
 
         hasPermission = checkPerm(sender, "editblockblacklist");
-        String mob = Character.toUpperCase(args[2].charAt(0))
-                + args[2].substring(1, args[2].length()).toLowerCase();
-
-        if (args[2].toLowerCase().equals("zombie_pigman")) {
-            mob = "Zombie_Pigman";
-        }
+        String mob = args[2];
 
         if (!hasPermission) {
             return false;
@@ -218,12 +212,7 @@ public class CommandHandler {
     public boolean setUseGlobalBlockBlacklist(CommandSender sender, String[] args){
 
          hasPermission = checkPerm(sender, "useglobalblockblacklist");
-         String mob = Character.toUpperCase(args[2].charAt(0))
-				+ args[2].substring(1, args[2].length()).toLowerCase();
-
-        if (args[2].toLowerCase().equals("zombie_pigman")) {
-			mob = "Zombie_Pigman";
-		}
+         String mob = args[2];
 
          if (!hasPermission) {
 			return false;
@@ -429,7 +418,7 @@ public class CommandHandler {
 			return false;
 		}
 
-		String mob = ConvertMobname(args[2]);
+		String mob = args[2];
 		String w = args[1];
 
 
@@ -480,13 +469,8 @@ public class CommandHandler {
         return true;
 	}
 
-	private boolean setConf(CommandSender sender, String[] args,
-			String operation) {
-		String mob = Character.toUpperCase(args[2].charAt(0))
-				+ args[2].substring(1, args[2].length()).toLowerCase();
-		if (args[2].toLowerCase().equals("zombie_pigman")) {
-			mob = "Zombie_Pigman";
-		}
+	private boolean setConf(CommandSender sender, String[] args, String operation) {
+		String mob = args[2];
 		String w = args[1];
 
 		if (this.server.getWorld(args[1]) == null) {
@@ -593,7 +577,7 @@ public class CommandHandler {
             
             blacklistList.add(blockId);
             
-            saveBlacklist(path,blacklistList);
+            cb.saveBlacklist(path,blacklistList,true);
             
         } else {
             
@@ -621,7 +605,7 @@ public class CommandHandler {
             idx = blacklistList.indexOf(blockId);
             blacklistList.remove(idx);
 
-            saveBlacklist(path,blacklistList);
+            cb.saveBlacklist(path,blacklistList,true);
 
         } else {
 
@@ -633,39 +617,7 @@ public class CommandHandler {
         
     }
     
-    private void saveBlacklist(String path, List<Integer> blacklistList)
-    {
 
-        if(blacklistList != null){
-            Iterator<Integer> blockedIds = blacklistList.iterator();
-            String blacklistString = "";
-            Integer IntBuffer;
-            while(blockedIds.hasNext()){
-                
-                IntBuffer = blockedIds.next();
-
-                if(blockedIds.hasNext()){
-
-                    blacklistString += IntBuffer.toString() + ";";
-
-                } else {
-
-                    blacklistString += IntBuffer.toString();
-
-                }
-            }
-
-            cb.config.set(path, blacklistString);
-
-        } else {
-
-        cb.config.set(path,"");
-
-        }
-        saveConfig();
-        cb.readConfig();
-        
-    }
     
     private List<Integer> loadBlacklist(String path){
         
@@ -699,7 +651,7 @@ public class CommandHandler {
        // }
     }
     
-    private String ConvertMobname(String s)
+    /*private String ConvertMobname(String s)
     {
         String ret;
         
@@ -715,7 +667,7 @@ public class CommandHandler {
             ret = Character.toUpperCase(s.charAt(0))+ s.substring(1, s.length()).toLowerCase();
         }
         return ret;
-    }
+    }   */
     
     private boolean MobExists(CommandSender sender,String mob)
     {

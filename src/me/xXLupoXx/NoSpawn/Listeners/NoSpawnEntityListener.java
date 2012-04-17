@@ -48,7 +48,7 @@ public class NoSpawnEntityListener implements Listener {
 
 
 		if (cb.plugin.isEnabled()) {
-			if (event.getSpawnReason() != SpawnReason.CUSTOM) {
+			if (event.getSpawnReason() != SpawnReason.CUSTOM && !ConfigBuffer.Debugmode) {
 				if (cb.config.get("worlds") != null) {
 					if (cb.worldSpawns.containsKey(event.getEntity().getWorld())) {
 

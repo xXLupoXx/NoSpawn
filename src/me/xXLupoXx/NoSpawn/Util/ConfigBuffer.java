@@ -22,6 +22,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 
+
 import java.util.*;
 
 public class ConfigBuffer {
@@ -32,32 +33,13 @@ public class ConfigBuffer {
     public static boolean sendMetrics = true;
 	static
 	{
-		MobMap.put("Sheep", EntityType.SHEEP);
-		MobMap.put("Pig", EntityType.PIG);
-		MobMap.put("Cow", EntityType.COW);
-		MobMap.put("Chicken", EntityType.CHICKEN);
-		MobMap.put("Squid", EntityType.SQUID);
-		MobMap.put("Zombie_Pigman", EntityType.PIG_ZOMBIE);
-		MobMap.put("Wolf", EntityType.WOLF);
-		MobMap.put("Zombie", EntityType.ZOMBIE);
-		MobMap.put("Skeleton", EntityType.SKELETON);
-		MobMap.put("Spider", EntityType.SPIDER);
-		MobMap.put("Creeper", EntityType.CREEPER);
-		MobMap.put("Slime", EntityType.SLIME);
-		MobMap.put("Ghast", EntityType.GHAST);
-		MobMap.put("Giant", EntityType.GIANT);
-        MobMap.put("Enderman", EntityType.ENDERMAN);
-        MobMap.put("Mooshroom", EntityType.MUSHROOM_COW);
-        MobMap.put("Villager", EntityType.VILLAGER);
-        MobMap.put("Blaze", EntityType.BLAZE);
-        MobMap.put("Cave_Spider", EntityType.CAVE_SPIDER);
-        MobMap.put("Silverfish", EntityType.SILVERFISH);
-        MobMap.put("Enderdragon", EntityType.ENDER_DRAGON);
-        MobMap.put("Magma_Cube", EntityType.MAGMA_CUBE);
-        MobMap.put("Ocelot",EntityType.OCELOT);
-        MobMap.put("Snowman",EntityType.SNOWMAN);
-        MobMap.put("Iron_Golem",EntityType.IRON_GOLEM);
-
+        for(EntityType ET : EntityType.values())
+        {
+            if(ET.isAlive() && ET != EntityType.PLAYER)
+            {
+                MobMap.put(ET.getName(),ET);
+            }
+        }
 	}
 
 	public NoSpawn plugin;
@@ -176,6 +158,8 @@ public class ConfigBuffer {
     public void repairConfig()
     {
         String Buffer;
+        if (config.getString("version").contains("1.8") || config.getString("version").contains("1.7")) convertConfig();
+
         config.set("version",plugin.getDescription().getVersion());
             for (World w : plugin.getServer().getWorlds()) {
 
@@ -216,4 +200,86 @@ public class ConfigBuffer {
             saveConfig();
 
     }
+
+    private void convertConfig(){
+        
+        readConfig();
+        loadOldData();
+        config.set("worlds",null);
+        saveConfig();
+        
+        for (World w : plugin.getServer().getWorlds()) {
+
+            for (String s : MobMap.keySet())
+            {
+                config.set("worlds." + w.getName() + ".creature." + s + ".spawn", this.worldSpawns.get(w).SpawnAllowed.get(MobMap.get(s)));
+                saveBlacklist("worlds." + w.getName() + ".creature." + s + ".BlockBlacklist",this.worldSpawns.get(w).BlockBlacklist.get(MobMap.get(s)),false);
+                config.set("worlds." + w.getName() + ".creature." + s + ".Limit", this.worldSpawns.get(w).MobLimit.get(MobMap.get(s)));
+                config.set("worlds." + w.getName() + ".creature." + s + ".UseGlobalBlockBlacklist", this.worldSpawns.get(w).UseGlobalBlockBlacklist.get(MobMap.get(s)));
+            }
+            config.set("worlds." + w.getName() + ".properties.TotalMobLimit", this.worldSpawns.get(w).TotalMobLimit);
+            saveBlacklist("worlds." + w.getName() + ".properties.GlobalBlockBlacklist",this.worldSpawns.get(w).GlobalBlockBlacklist,false);
+        }
+        saveConfig();
+    }
+    
+    private void loadOldData(){
+        for (World w : plugin.getServer().getWorlds()) {
+            if(config.get("worlds." + w.getName()+ ".creature.Mooshroom") != null) ReadOldData("MushroomCow","Mooshroom",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Magma_Cube") != null) ReadOldData("LavaSlime","Magma_Cube",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Zombie_Pigman") != null) ReadOldData("PigZombie","Zombie_Pigman",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Cave_Spider") != null) ReadOldData("CaveSpider","Cave_Spider",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Iron_Golem") != null) ReadOldData("VillagerGolem","Iron_Golem",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Enderdragon") != null) ReadOldData("EnderDragon","Enderdragon",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Snowman") != null) ReadOldData("SnowMan","Snowman",w);
+            if(config.get("worlds." + w.getName()+ ".creature.Ocelot") != null) ReadOldData("Ozelot","Ocelot",w);
+        }
+    }
+    
+    private void ReadOldData(String NewMob, String OldMob, World w){
+          
+            this.worldSpawns.get(w).SpawnAllowed.put(MobMap.get(NewMob), config.getBoolean("worlds." + w.getName()+ ".creature." + OldMob + ".spawn", true));
+            this.worldSpawns.get(w).BlockBlacklist.put(	MobMap.get(NewMob), getBlacklist(config.getString("worlds." + w.getName() + ".creature."+ OldMob + ".BlockBlacklist", "")));
+            this.worldSpawns.get(w).UseGlobalBlockBlacklist.put(MobMap.get(NewMob), config.getBoolean("worlds." + w.getName() + ".creature."+ OldMob + ".UseGlobalBlockBlacklist", true));
+            this.worldSpawns.get(w).MobLimit.put(MobMap.get(NewMob),config.getInt("worlds." + w.getName()+ ".creature." + OldMob + ".Limit", 0));
+    }
+
+    public void saveBlacklist(String path, List<Integer> blacklistList, boolean saveFlag)
+    {
+
+        if(blacklistList != null){
+            Iterator<Integer> blockedIds = blacklistList.iterator();
+            String blacklistString = "";
+            Integer IntBuffer;
+            while(blockedIds.hasNext()){
+
+                IntBuffer = blockedIds.next();
+
+                if(blockedIds.hasNext()){
+
+                    blacklistString += IntBuffer.toString() + ";";
+
+                } else {
+
+                    blacklistString += IntBuffer.toString();
+
+                }
+            }
+
+            config.set(path, blacklistString);
+
+        } else {
+
+            config.set(path,"");
+
+        }
+        if(saveFlag) {
+            
+        saveConfig();
+        readConfig();
+            
+        }
+
+    }
+    
 }

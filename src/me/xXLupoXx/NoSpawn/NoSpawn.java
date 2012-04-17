@@ -81,7 +81,7 @@ public class NoSpawn extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(this.el, this);
 		getServer().getPluginManager().registerEvents(this.wl, this);
 
-        if (cb.sendMetrics)
+        if (ConfigBuffer.sendMetrics)
         {
             try
             {
@@ -109,7 +109,7 @@ public class NoSpawn extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
-        
+
 		if (command.getName().equals("nospawn")) {
 
 			if (args.length > 0) {
