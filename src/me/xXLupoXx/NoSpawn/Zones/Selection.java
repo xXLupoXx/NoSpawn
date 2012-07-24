@@ -110,7 +110,7 @@ public class Selection {
         }
 
         NoSpawnDebugLogger.debugmsg("----Created Min/Max Vector----");
-        NoSpawnDebugLogger.debugmsg("New Min X: "+min.getX()+" Y: "+min.getY()+" Z: "+min.getX());
-        NoSpawnDebugLogger.debugmsg("New Max X: "+max.getX()+" Y: "+max.getY()+" Z: "+max.getX());
+        NoSpawnDebugLogger.debugmsg("New Min X: "+min.getX()+" Y: "+min.getY()+" Z: "+min.getZ());
+        NoSpawnDebugLogger.debugmsg("New Max X: "+max.getX()+" Y: "+max.getY()+" Z: "+max.getZ());
     }
 }

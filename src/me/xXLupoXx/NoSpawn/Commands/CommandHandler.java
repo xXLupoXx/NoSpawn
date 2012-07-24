@@ -16,17 +16,16 @@
 
 package me.xXLupoXx.NoSpawn.Commands;
 
-import me.xXLupoXx.NoSpawn.NoSpawn;
 import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
 import me.xXLupoXx.NoSpawn.Util.NoSpawnDebugLogger;
 import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
-import me.xXLupoXx.NoSpawn.Zones.PlayerSelection;
 import me.xXLupoXx.NoSpawn.Zones.Selection;
 import me.xXLupoXx.NoSpawn.Zones.Zone;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -704,14 +703,13 @@ public class CommandHandler {
 
         Selection selection = cb.plugin.getPlayerSelection().PlayerMap.get(player);
 
-        int prio = cb.plugin.getZoneHandler().getZonesAt(selection.getMin(),selection.getMax(),player.getLocation()).size() +1;
 
-        NoSpawnDebugLogger.debugmsg("Create Zone " + args[1] + " with Prio" + prio);
+        NoSpawnDebugLogger.debugmsg("Create Zone " + args[1]);
 
-        NoSpawnDebugLogger.debugmsg("Sec Min X: "+selection.getMin().getX()+" Y: "+selection.getMin().getY()+" Z: "+selection.getMin().getX());
-        NoSpawnDebugLogger.debugmsg("Sec Max X: "+selection.getMax().getX()+" Y: "+selection.getMax().getY()+" Z: "+selection.getMax().getX());
+        NoSpawnDebugLogger.debugmsg("Sec Min X: "+selection.getMin().getX()+" Y: "+selection.getMin().getY()+" Z: "+selection.getMin().getZ());
+        NoSpawnDebugLogger.debugmsg("Sec Max X: "+selection.getMax().getX()+" Y: "+selection.getMax().getY()+" Z: "+selection.getMax().getZ());
 
-        Zone newZone = new Zone(selection.getMin(),selection.getMax(),selection.w,args[1],player.getName(),prio, cb);
+        Zone newZone = new Zone(selection.getMin().clone(),selection.getMax().clone(),selection.w,args[1],player.getName(),0, cb);
 
         cb.plugin.getZoneHandler().WorldZones.get(selection.w).add(newZone);
         cb.saveZones();

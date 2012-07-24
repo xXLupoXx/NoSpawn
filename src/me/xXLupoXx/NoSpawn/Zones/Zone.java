@@ -16,15 +16,12 @@
 
 package me.xXLupoXx.NoSpawn.Zones;
 
-import me.xXLupoXx.NoSpawn.NoSpawn;
 import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
 import me.xXLupoXx.NoSpawn.Util.NoSpawnDebugLogger;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -63,24 +60,18 @@ public class Zone
 
     public boolean isInZone(Vector min, Vector max)
     {
-        if(this.max.isInAABB(min,max) || this.max.isInAABB(min, max))
+        //if(this.max.isInAABB(min,max) || this.max.isInAABB(min, max))
+        if((this.min.getX()>= min.getX() && this.min.getY()>= min.getY() && this.min.getZ()>= min.getZ()) || (this.max.getX()<= max.getX() && this.max.getY()<= max.getY() && this.max.getZ()<= max.getZ()))
         {
             NoSpawnDebugLogger.debugmsg(name);
-            NoSpawnDebugLogger.debugmsg("Min X: "+this.min.getX()+" Y: "+this.min.getY()+" Z: "+this.min.getX());
-            NoSpawnDebugLogger.debugmsg("Max X: "+this.max.getX()+" Y: "+this.max.getY()+" Z: "+this.max.getX());
+            NoSpawnDebugLogger.debugmsg("Min X: "+this.min.getX()+" Y: "+this.min.getY()+" Z: "+this.min.getZ());
+            NoSpawnDebugLogger.debugmsg("Max X: "+this.max.getX()+" Y: "+this.max.getY()+" Z: "+this.max.getZ());
             return true;
         }
         return false;
-    }
 
-    public Vector getMin()
-    {
-        return min;
-    }
 
-    public Vector getMax()
-    {
-        return max;
+
     }
 
     public String getName()
