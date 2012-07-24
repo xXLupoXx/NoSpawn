@@ -16,8 +16,13 @@
 
 package me.xXLupoXx.NoSpawn.Commands;
 
+import me.xXLupoXx.NoSpawn.NoSpawn;
 import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import me.xXLupoXx.NoSpawn.Util.NoSpawnDebugLogger;
 import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
+import me.xXLupoXx.NoSpawn.Zones.PlayerSelection;
+import me.xXLupoXx.NoSpawn.Zones.Selection;
+import me.xXLupoXx.NoSpawn.Zones.Zone;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -446,9 +451,11 @@ public class CommandHandler {
                     + " Mobs from " + w, ChatColor.GREEN);
             return true;
         }
-        
-        if(!MobExists(sender,mob))
+
+        if (!MobExists(sender, mob))
+        {
             return false;
+        }
         
         for(Entity e:le)
         {
@@ -683,6 +690,32 @@ public class CommandHandler {
                     ChatColor.RED);
             return false;
         }
+        return true;
+    }
+
+    public boolean createZone(CommandSender sender, String[] args)
+    {
+        Player player = null;
+        if(sender instanceof Player){
+            player = (Player)sender;
+        }
+
+        if(player == null) return false;
+
+        Selection selection = cb.plugin.getPlayerSelection().PlayerMap.get(player);
+
+        int prio = cb.plugin.getZoneHandler().getZonesAt(selection.getMin(),selection.getMax(),player.getLocation()).size() +1;
+
+        NoSpawnDebugLogger.debugmsg("Create Zone " + args[1] + " with Prio" + prio);
+
+        NoSpawnDebugLogger.debugmsg("Sec Min X: "+selection.getMin().getX()+" Y: "+selection.getMin().getY()+" Z: "+selection.getMin().getX());
+        NoSpawnDebugLogger.debugmsg("Sec Max X: "+selection.getMax().getX()+" Y: "+selection.getMax().getY()+" Z: "+selection.getMax().getX());
+
+        Zone newZone = new Zone(selection.getMin(),selection.getMax(),selection.w,args[1],player.getName(),prio, cb);
+
+        cb.plugin.getZoneHandler().WorldZones.get(selection.w).add(newZone);
+        cb.saveZones();
+
         return true;
     }
 

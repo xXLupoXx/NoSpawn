@@ -55,7 +55,7 @@ public class NoSpawnEntityListener implements Listener {
 						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount.get(event.getEntityType());
 						tmp++;
 
-						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getEntityType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
+						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getEntityType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN),event.getLocation())) {
 
 							event.setCancelled(true);
 							tmp--;

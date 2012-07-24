@@ -18,8 +18,11 @@ package me.xXLupoXx.NoSpawn;
 
 import me.xXLupoXx.NoSpawn.Commands.CommandHandler;
 import me.xXLupoXx.NoSpawn.Listeners.NoSpawnEntityListener;
+import me.xXLupoXx.NoSpawn.Listeners.NoSpawnPlayerListener;
 import me.xXLupoXx.NoSpawn.Listeners.NoSpawnWorldListener;
 import me.xXLupoXx.NoSpawn.Util.*;
+import me.xXLupoXx.NoSpawn.Zones.PlayerSelection;
+import me.xXLupoXx.NoSpawn.Zones.ZoneHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -31,13 +34,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 
 
-public class NoSpawn extends JavaPlugin {
-	NoSpawnEntityListener el;
-	NoSpawnWorldListener wl;
-	ConfigBuffer cb;
-	public MobCounter mc;
+//TODO Zone speichern, Überprüfen ob Mob in zone, testen
 
+public class NoSpawn extends JavaPlugin {
+    private ConfigBuffer cb;
+    private  ZoneHandler zoneHandler;
+	public MobCounter mc;
     private static NoSpawn plug;
+
+    private  PlayerSelection ps;
 
 	CommandHandler cmh;
 
@@ -46,9 +51,21 @@ public class NoSpawn extends JavaPlugin {
         return plug;
     }
 
-	public void onEnable() {
-        plug = this;
 
+    public PlayerSelection getPlayerSelection()
+    {
+        return this.ps;
+    }
+
+    public ZoneHandler getZoneHandler()
+    {
+        return zoneHandler;
+    }
+
+	public void onEnable() {
+
+        plug = this;
+        this.ps = new PlayerSelection();
 		this.cb = new ConfigBuffer(this);
 
 		for (World w : this.getServer().getWorlds()) {
@@ -64,9 +81,12 @@ public class NoSpawn extends JavaPlugin {
 		cb.readConfig();
 
 		cb.plugin = this;
-		this.el = new NoSpawnEntityListener(this.cb);
+        NoSpawnEntityListener el = new NoSpawnEntityListener(this.cb);
 		mc = new MobCounter(this.getServer(), cb);
-		wl = new NoSpawnWorldListener(cb);
+        NoSpawnWorldListener wl = new NoSpawnWorldListener(cb);
+        NoSpawnPlayerListener pl = new NoSpawnPlayerListener(this);
+
+        zoneHandler = new ZoneHandler(this);
 
         NoSpawnPermissions.setup();
 
@@ -78,8 +98,9 @@ public class NoSpawn extends JavaPlugin {
 		System.out.println(pdfFile.getName() + " version "
 				+ pdfFile.getVersion() + " is enabled!");
 
-		getServer().getPluginManager().registerEvents(this.el, this);
-		getServer().getPluginManager().registerEvents(this.wl, this);
+		getServer().getPluginManager().registerEvents(el, this);
+		getServer().getPluginManager().registerEvents(wl, this);
+        getServer().getPluginManager().registerEvents(pl, this);
 
         if (ConfigBuffer.sendMetrics)
         {
@@ -87,7 +108,7 @@ public class NoSpawn extends JavaPlugin {
             {
                 Metrics metrics = new Metrics();
 
-                metrics.beginMeasuringPlugin(getPlugin());
+                metrics.beginMeasuringPlugin(this);
             }
             catch (IOException e)
             {
@@ -152,6 +173,15 @@ public class NoSpawn extends JavaPlugin {
                 } else if (args[0].equals("reloadconf")) {
 
                     return cmh.reloadConf(sender);
+
+                } else if(args[0].equals("debug")) {
+
+                    ConfigBuffer.Debugmode = !ConfigBuffer.Debugmode;
+                    return true;
+
+                } else if(args[0].equals("zcreate")) {
+
+                    return cmh.createZone(sender,args);
 
                 } else {
 

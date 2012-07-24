@@ -16,6 +16,10 @@
 
 package me.xXLupoXx.NoSpawn.Util;
 
+import me.xXLupoXx.NoSpawn.NoSpawn;
+import me.xXLupoXx.NoSpawn.Zones.PriorityZone;
+import me.xXLupoXx.NoSpawn.Zones.Zone;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 
@@ -31,6 +35,9 @@ public class Spawns {
 	public Map<EntityType, Integer> CurrentMobCount = new HashMap<EntityType, Integer>();
     public Map<EntityType, Boolean> UseGlobalBlockBlacklist = new HashMap<EntityType, Boolean>();
     public List<Integer> GlobalBlockBlacklist = new ArrayList<Integer>();
+    private List<Zone> Zones = new ArrayList<Zone>();
+    Boolean spawnAllowed = null;
+
 
 	public int TotalMobLimit = 0;
 
@@ -40,8 +47,44 @@ public class Spawns {
 		this.cb = cb;
 	}
 
-	public boolean isSpawnAllowed(EntityType type, Block block) {
-		if ((getCurrentTotalMobsCount() >= TotalMobLimit) && TotalMobLimit != 0) {
+	public boolean isSpawnAllowed(EntityType type, Block block, Location loc) {
+
+        Zones = cb.plugin.getZoneHandler().getZonesAt(loc);
+        if(Zones != null)
+        {
+            PriorityZone PZ = new PriorityZone();
+
+            Zone zz;
+
+            for(Zone z: Zones)
+            {
+                PZ.insert(z);
+            }
+
+            while (!PZ.isEmpty())
+            {
+                zz = PZ.getNextZone();
+                if(zz.spawnAllowed(type) != null){
+
+                    spawnAllowed = zz.spawnAllowed(type);
+                }
+            }
+
+            if(spawnAllowed!= null){
+                if(!spawnAllowed){
+                    NoSpawnDebugLogger.debugmsg("No mobs spawnd because "+type.getName()+" can't spawn in this Zone!");
+                    return false;
+                }
+            }
+        }
+
+        if(spawnAllowed != null) {
+
+            NoSpawnDebugLogger.debugmsg("Zonesettings override other settings!");
+            return spawnAllowed;
+        }
+
+        if ((getCurrentTotalMobsCount() >= TotalMobLimit) && TotalMobLimit != 0) {
 
             NoSpawnDebugLogger.debugmsg("No mobs spawnd because the total Mobcount is "+getCurrentTotalMobsCount() + "but only "+TotalMobLimit+" mobs are allowed");
 
@@ -79,6 +122,10 @@ public class Spawns {
             NoSpawnDebugLogger.debugmsg("No mobs spawnd because "+type.getName()+" aren't allowed");
 			return false;
 		}
+
+
+
+
 	}
 
 	public int getCurrentTotalMobsCount() {

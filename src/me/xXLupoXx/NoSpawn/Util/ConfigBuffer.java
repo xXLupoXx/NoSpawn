@@ -18,11 +18,14 @@ package me.xXLupoXx.NoSpawn.Util;
 
 import me.xXLupoXx.NoSpawn.NoSpawn;
 
+import me.xXLupoXx.NoSpawn.Zones.Zone;
+import net.minecraft.server.NBTTagList;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 
 
+import java.io.File;
 import java.util.*;
 
 public class ConfigBuffer {
@@ -31,6 +34,11 @@ public class ConfigBuffer {
     public static boolean BukkitPerm = false;
     public static boolean Debugmode = false;
     public static boolean sendMetrics = true;
+    public static int wandID = 0;
+    public static int readerID = 0;
+
+    public NoSpawn plugin;
+    private final File ZonesPath;
 	static
 	{
         for(EntityType ET : EntityType.values())
@@ -42,13 +50,14 @@ public class ConfigBuffer {
         }
 	}
 
-	public NoSpawn plugin;
+
 	public int CountTimer;
     public FileConfiguration config;
 
 	public ConfigBuffer(NoSpawn plugin) {
 		config = plugin.getConfig();
 		this.plugin = plugin;
+        ZonesPath = new File(plugin.getDataFolder().getPath() + File.separator + "Zones.NoSpawn");
 	}
 
 	public void setupConfig() {
@@ -72,6 +81,8 @@ public class ConfigBuffer {
         config.set("properties.RefreshTimer", 60000);
         config.set("properties.UseBukkitPermissions",false);
         config.set("properties.sendMetrics",true);
+        config.set("properties.WandID", 262);   //Item that Selects Zone
+        config.set("properties.ZoneReaderID", 369); //Item that gets Zone Data
         saveConfig();
 	}
 
@@ -119,6 +130,8 @@ public class ConfigBuffer {
         this.CountTimer = config.getInt("properties.RefreshTimer",20000);
         BukkitPerm = config.getBoolean("properties.UseBukkitPermissions",false);
         sendMetrics = config.getBoolean("properties.sendMetrics",true);
+        wandID = config.getInt("properties.WandID", 262);   //Item that Selects Zone
+        readerID = config.getInt("properties.ZoneReaderID", 369); //Item that gets Zone Data
 
 	}
 
@@ -195,6 +208,12 @@ public class ConfigBuffer {
             }
             if(config.get("properties.sendMetrics")== null){
                 config.set("properties.sendMetrics",true);
+            }
+            if(config.get("properties.WandID")== null){
+                config.set("properties.WandID", 262);
+            }
+            if(config.get("properties.ZoneReaderID")== null){
+                config.set("properties.ZoneReaderID", 369);
             }
 
             saveConfig();
@@ -280,6 +299,22 @@ public class ConfigBuffer {
             
         }
 
+    }
+
+    public void saveZones()
+    {
+        NBTConfiguration nbtConfiguration = new NBTConfiguration(ZonesPath);
+        NBTTagList Zones = new NBTTagList();
+        for(World w:plugin.getServer().getWorlds())
+        {
+            for(Zone z: plugin.getZoneHandler().WorldZones.get(w))
+            {
+                 Zones.add(z.save());
+            }
+        }
+
+        nbtConfiguration.getNBTTagCompound().set("Zones",Zones);
+        nbtConfiguration.save();
     }
     
 }
