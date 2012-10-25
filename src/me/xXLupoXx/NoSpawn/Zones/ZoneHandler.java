@@ -110,6 +110,8 @@ public class ZoneHandler
                         z.BlackListMob.remove(e);
                     }
                 }
+
+                z.save();
             }
 
         }
@@ -141,6 +143,7 @@ public class ZoneHandler
                         z.BlackListMob.add(e);
                     }
                 }
+                z.save();
             }
         }
 

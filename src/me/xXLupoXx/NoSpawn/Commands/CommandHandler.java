@@ -23,10 +23,12 @@ import me.xXLupoXx.NoSpawn.Zones.Selection;
 import me.xXLupoXx.NoSpawn.Zones.Zone;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -704,6 +706,10 @@ public class CommandHandler {
         Selection selection = cb.plugin.getPlayerSelection().PlayerMap.get(player);
 
 
+        if(cb.plugin.zoneHandler.ZoneExists(player.getLocation(), args[1])) {
+            cb.plugin.sendNospawnMessage(sender,"A Zone with the name " + args[1] +"already exists", ChatColor.RED);
+            return false;
+        }
         NoSpawnDebugLogger.debugmsg("Create Zone " + args[1]);
 
         NoSpawnDebugLogger.debugmsg("Sec Min X: "+selection.getMin().getX()+" Y: "+selection.getMin().getY()+" Z: "+selection.getMin().getZ());
@@ -717,5 +723,40 @@ public class CommandHandler {
         return true;
     }
 
+    public boolean addMobToZone(CommandSender sender, String[] args) {
+
+        Player player = null;
+        if(sender instanceof Player){
+            player = (Player)sender;
+        }
+
+        if(player == null) return false;
+
+        if(cb.plugin.getServer().getWorld(args[1]) == null){
+
+            cb.plugin.sendNospawnMessage(sender,"No world with name" + args[1], ChatColor.RED);
+            return false;
+        }
+        //World w = cb.plugin.getServer().getWorld(args[1]);
+
+        //Keine lust!!
+        //TODO Hier weiter Befehle schreiben... ach ja...
+        //args[1] // World
+        //args[2] // mob
+
+        return false;
+    }
+
+    public boolean deleteMobFromZone(CommandSender sender, String[] args) {
+
+        Player player = null;
+        if(sender instanceof Player){
+            player = (Player)sender;
+        }
+
+        if(player == null) return false;
+
+        return false;
+    }
 }
 

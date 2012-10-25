@@ -38,7 +38,7 @@ import java.io.IOException;
 
 public class NoSpawn extends JavaPlugin {
     private ConfigBuffer cb;
-    private  ZoneHandler zoneHandler;
+    public   ZoneHandler zoneHandler;
 	public MobCounter mc;
     private static NoSpawn plug;
 
