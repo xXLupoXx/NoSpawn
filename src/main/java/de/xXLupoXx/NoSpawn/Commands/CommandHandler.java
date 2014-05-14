@@ -14,21 +14,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn.Commands;
+package de.xXLupoXx.NoSpawn.Commands;
 
-import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
-import me.xXLupoXx.NoSpawn.Util.NoSpawnDebugLogger;
-import me.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
-import me.xXLupoXx.NoSpawn.Zones.Selection;
-import me.xXLupoXx.NoSpawn.Zones.Zone;
+import de.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import de.xXLupoXx.NoSpawn.Util.NoSpawnPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -452,11 +446,9 @@ public class CommandHandler {
                     + " Mobs from " + w, ChatColor.GREEN);
             return true;
         }
-
-        if (!MobExists(sender, mob))
-        {
+        
+        if(!MobExists(sender,mob))
             return false;
-        }
         
         for(Entity e:le)
         {
@@ -694,69 +686,5 @@ public class CommandHandler {
         return true;
     }
 
-    public boolean createZone(CommandSender sender, String[] args)
-    {
-        Player player = null;
-        if(sender instanceof Player){
-            player = (Player)sender;
-        }
-
-        if(player == null) return false;
-
-        Selection selection = cb.plugin.getPlayerSelection().PlayerMap.get(player);
-
-
-        if(cb.plugin.zoneHandler.ZoneExists(player.getLocation(), args[1])) {
-            cb.plugin.sendNospawnMessage(sender,"A Zone with the name " + args[1] +"already exists", ChatColor.RED);
-            return false;
-        }
-        NoSpawnDebugLogger.debugmsg("Create Zone " + args[1]);
-
-        NoSpawnDebugLogger.debugmsg("Sec Min X: "+selection.getMin().getX()+" Y: "+selection.getMin().getY()+" Z: "+selection.getMin().getZ());
-        NoSpawnDebugLogger.debugmsg("Sec Max X: "+selection.getMax().getX()+" Y: "+selection.getMax().getY()+" Z: "+selection.getMax().getZ());
-
-        Zone newZone = new Zone(selection.getMin().clone(),selection.getMax().clone(),selection.w,args[1],player.getName(),0, cb);
-
-        cb.plugin.getZoneHandler().WorldZones.get(selection.w).add(newZone);
-        cb.saveZones();
-
-        return true;
-    }
-
-    public boolean addMobToZone(CommandSender sender, String[] args) {
-
-        Player player = null;
-        if(sender instanceof Player){
-            player = (Player)sender;
-        }
-
-        if(player == null) return false;
-
-        if(cb.plugin.getServer().getWorld(args[1]) == null){
-
-            cb.plugin.sendNospawnMessage(sender,"No world with name" + args[1], ChatColor.RED);
-            return false;
-        }
-        //World w = cb.plugin.getServer().getWorld(args[1]);
-
-        //Keine lust!!
-        //TODO Hier weiter Befehle schreiben... ach ja...
-        //args[1] // World
-        //args[2] // mob
-
-        return false;
-    }
-
-    public boolean deleteMobFromZone(CommandSender sender, String[] args) {
-
-        Player player = null;
-        if(sender instanceof Player){
-            player = (Player)sender;
-        }
-
-        if(player == null) return false;
-
-        return false;
-    }
 }
 

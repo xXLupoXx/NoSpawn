@@ -14,10 +14,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn.Listeners;
+package de.xXLupoXx.NoSpawn.Listeners;
 
-import me.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import de.xXLupoXx.NoSpawn.Util.ConfigBuffer;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -34,7 +36,10 @@ public class NoSpawnEntityListener implements Listener {
 	}
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-		if (event.isCancelled()) {
+        LivingEntity entity;
+        World world;
+
+        if (event.isCancelled()) {
 			return;
 		}
 		if (cb.config == null) {
@@ -45,23 +50,54 @@ public class NoSpawnEntityListener implements Listener {
         {
             return;
         }
-
+        if(event == null) {
+            return;
+        }
+        if(event.getEntity() == null) {
+            return;
+        } else {
+            entity = event.getEntity();
+        }
+        if(event.getEntity().getWorld() == null) {
+            return;
+        } else {
+            world = entity.getWorld();
+        }
 
 		if (cb.plugin.isEnabled()) {
-			if (event.getSpawnReason() != SpawnReason.CUSTOM && !ConfigBuffer.Debugmode) {
-				if (cb.config.get("worlds") != null) {
-					if (cb.worldSpawns.containsKey(event.getEntity().getWorld())) {
 
-						tmp = cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount.get(event.getEntityType());
+            if(cb.allowEggSpawn.containsKey(world)) {
+                if(cb.allowEggSpawn.get(world)) {
+                    if(event.getSpawnReason() == SpawnReason.SPAWNER_EGG) {
+                        return;
+                    }
+                } else if (event.getSpawnReason() == SpawnReason.CUSTOM) {
+                    return;
+                }
+            }
+
+            if(cb.allowSpawnerSapwn.containsKey(world)) {
+                if(cb.allowSpawnerSapwn.get(world)) {
+                    if(event.getSpawnReason() == SpawnReason.SPAWNER) {
+                        return;
+                    }
+                }
+            }
+
+			if (!ConfigBuffer.Debugmode) {
+				if (cb.config.get("worlds") != null) {
+					if (cb.worldSpawns.containsKey(world)) {
+
+						tmp = cb.worldSpawns.get(world).CurrentMobCount.get(event.getEntityType());
 						tmp++;
 
-						if (!cb.worldSpawns.get(event.getEntity().getWorld()).isSpawnAllowed(event.getEntityType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN),event.getLocation())) {
+						if (!cb.worldSpawns.get(world).isSpawnAllowed(event.getEntityType(), event.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
 
 							event.setCancelled(true);
 							tmp--;
 						}
 
-						cb.worldSpawns.get(event.getEntity().getWorld()).CurrentMobCount.put(event.getEntityType(), tmp);
+						cb.worldSpawns.get(world).CurrentMobCount.put(event.getEntityType(), tmp);
 
 					} else {
 						event.setCancelled(true);

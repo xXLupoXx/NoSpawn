@@ -1,0 +1,9 @@
+name: NoSpawn
+main: de.xXLupoXx.NoSpawn.NoSpawn
+author: xXLupoXx
+version: 1.9.5
+website: http://dev.bukkit.org/server-mods/nospawn/
+softdepend: [Vault]
+commands:
+  nospawn:
+    description: NoSpawn commands

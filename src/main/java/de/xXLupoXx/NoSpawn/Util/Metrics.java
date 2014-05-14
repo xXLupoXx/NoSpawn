@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package me.xXLupoXx.NoSpawn.Util;
+package de.xXLupoXx.NoSpawn.Util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

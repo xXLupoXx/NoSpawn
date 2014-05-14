@@ -2,8 +2,8 @@
  * Copyright (C) 2011-2012 Keyle
  */
 
-package me.xXLupoXx.NoSpawn.Util;
-import me.xXLupoXx.NoSpawn.NoSpawn;
+package de.xXLupoXx.NoSpawn.Util;
+import de.xXLupoXx.NoSpawn.NoSpawn;
 
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;

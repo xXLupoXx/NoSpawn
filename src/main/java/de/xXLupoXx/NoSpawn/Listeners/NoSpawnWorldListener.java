@@ -14,45 +14,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.xXLupoXx.NoSpawn.Util;
+package de.xXLupoXx.NoSpawn.Listeners;
 
-import org.bukkit.Server;
+import de.xXLupoXx.NoSpawn.Util.Spawns;
+import de.xXLupoXx.NoSpawn.Util.ConfigBuffer;
 import org.bukkit.World;
-import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
 
 
-public class MobCounter {
+public class NoSpawnWorldListener implements Listener{
 
-	Server server;
 	ConfigBuffer cb;
 
-	public MobCounter(final Server server, final ConfigBuffer cb) {
-
-		this.server = server;
+	public NoSpawnWorldListener(ConfigBuffer cb) {
 		this.cb = cb;
+	}
+    @EventHandler(priority = EventPriority.NORMAL)
+	public void onWorldLoad(WorldLoadEvent event) {
 
-		runSchedueler();
+		World w = event.getWorld();
+		cb.worldSpawns.put(w, new Spawns(cb));
+        cb.allowSpawnerSapwn.put(w,false);
+        cb.allowEggSpawn.put(w,false);
+
+		if (cb.config.get("worlds") != null) {
+			cb.readConfig();
+
+		} else {
+
+			cb.addWorldToConfig(w);
+
+			System.out.println("[NoSpawn] New world \"" + w.getName()
+					+ "\" detected");
+
+			cb.readConfig();
+
+		}
+
 	}
 
-	public void runSchedueler() {
-
-		server.getScheduler().scheduleSyncRepeatingTask(cb.plugin, new Runnable() {
-			public void run() {
-
-				for (World w : server.getWorlds()) {
-
-                    for(EntityType e:ConfigBuffer.MobMap.values())
-                    {
-                        cb.worldSpawns.get(w).CurrentMobCount.put(e,0);
-                    }
-					for (LivingEntity e : w.getLivingEntities()) {
-
-                        if(!(e instanceof Player)) {
-                            cb.worldSpawns.get(w).CurrentMobCount.put(e.getType(),(cb.worldSpawns.get(w).CurrentMobCount.get(e.getType())+1));
-                        }
-				    }
-                }
-			}
-		}, 0, ((cb.CountTimer / 1000) * 20));
-	}
 }
