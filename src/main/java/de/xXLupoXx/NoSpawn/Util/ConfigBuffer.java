@@ -33,8 +33,9 @@ public class ConfigBuffer {
     public static boolean sendMetrics = true;
     public static boolean hasMyPet = false;
 
-    public Map<World,Boolean> allowEggSpawn = new HashMap<World, Boolean>();
+    public Map<World,Boolean> allowEggSpawn = new HashMap<World, Boolean>();   //Note: allow becuase it cancels the mob check
     public Map<World,Boolean> allowSpawnerSapwn = new HashMap<World, Boolean>();
+    public Map<World,Boolean> denyJockeySpawn = new HashMap<World, Boolean>();
 	static
 	{
         for(EntityType ET : EntityType.values())
@@ -74,6 +75,7 @@ public class ConfigBuffer {
             config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
             config.set("worlds." + w.getName() + ".properties.AllowEggSpawn", false);
             config.set("worlds." + w.getName() + ".properties.AllowSpawnerSpawn", false);
+            config.set("worlds." + w.getName() + ".properties.DenyJockeySpawn", false);
 		}
         config.set("properties.RefreshTimer", 60000);
         config.set("properties.UseBukkitPermissions",false);
@@ -96,6 +98,7 @@ public class ConfigBuffer {
         config.set("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", "");
         config.set("worlds." + w.getName() + ".properties.AllowEggSpawn", false);
         config.set("worlds." + w.getName() + ".properties.AllowSpawnerSpawn", false);
+        config.set("worlds." + w.getName() + ".properties.DenyJockeySpawn", false);
 		saveConfig();
 	}
 
@@ -120,8 +123,9 @@ public class ConfigBuffer {
                 this.worldSpawns.get(w).GlobalBlockBlacklist = getBlacklist(config.getString("worlds." + w.getName() + ".properties.GlobalBlockBlacklist", ""));
 
 				this.worldSpawns.get(w).TotalMobLimit = config.getInt("worlds." + w.getName()+ ".properties.TotalMobLimit", 0);
-                this.allowEggSpawn.put(w,config.getBoolean("worlds." + w.getName() + ".properties.AllowEggSpawn",false));
-                this.allowSpawnerSapwn.put(w,config.getBoolean("worlds." + w.getName() + ".properties.AllowSpawnerSpawn",false));
+                this.allowEggSpawn.put(w, config.getBoolean("worlds." + w.getName() + ".properties.AllowEggSpawn", false));
+                this.allowSpawnerSapwn.put(w, config.getBoolean("worlds." + w.getName() + ".properties.AllowSpawnerSpawn", false));
+                this.denyJockeySpawn.put(w, config.getBoolean("worlds." + w.getName() + ".properties.DenyJockeySpawn", false));
 			}
 		}
 
@@ -201,6 +205,10 @@ public class ConfigBuffer {
                 if(config.get("worlds." + w.getName() + ".properties.AllowSpawnerSpawn") == null) {
                     config.set("worlds." + w.getName() + ".properties.AllowSpawnerSpawn",false);
                 }
+                if(config.get("worlds." + w.getName() + ".properties.DenyJockeySpawn") == null) {
+                    config.set("worlds." + w.getName() + ".properties.DenyJockeySpawn",false);
+                }
+
             }
             if(config.get("properties.RefreshTimer") == null){
                 config.set("properties.RefreshTimer", 60000);

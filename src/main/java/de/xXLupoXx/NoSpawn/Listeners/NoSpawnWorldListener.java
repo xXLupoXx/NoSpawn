@@ -39,6 +39,7 @@ public class NoSpawnWorldListener implements Listener{
 		cb.worldSpawns.put(w, new Spawns(cb));
         cb.allowSpawnerSapwn.put(w,false);
         cb.allowEggSpawn.put(w,false);
+        cb.denyJockeySpawn.put(w,false);
 
 		if (cb.config.get("worlds") != null) {
 			cb.readConfig();

@@ -66,6 +66,14 @@ public class NoSpawnEntityListener implements Listener {
 
 		if (cb.plugin.isEnabled()) {
 
+            if(cb.denyJockeySpawn.containsKey(world))  {
+                if(cb.denyJockeySpawn.get(world)) {
+                    if(event.getSpawnReason() == SpawnReason.JOCKEY) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+
             if(cb.allowEggSpawn.containsKey(world)) {
                 if(cb.allowEggSpawn.get(world)) {
                     if(event.getSpawnReason() == SpawnReason.SPAWNER_EGG) {
